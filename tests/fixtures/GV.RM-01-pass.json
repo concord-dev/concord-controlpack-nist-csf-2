@@ -1,0 +1,22 @@
+{
+  "attestation": {
+    "kind": "risk_management_strategy",
+    "owner": "ciso@example.com",
+    "attested_at": "2026-01-01T00:00:00Z",
+    "expires_at": "2099-12-31T23:59:59Z",
+    "version": 1,
+    "attested_fields": {
+      "objectives": [
+        "maintain customer trust through transparent incident response",
+        "limit financial impact of any single risk to 0.5% of ARR",
+        "comply with SOC 2 + ISO 27001 + GDPR continuously"
+      ],
+      "stakeholders": [
+        {"name": "CEO", "agreed_at": "2026-01-01"},
+        {"name": "CTO", "agreed_at": "2026-01-01"},
+        {"name": "Legal Counsel", "agreed_at": "2026-01-02"}
+      ],
+      "review_cadence_days": 365
+    }
+  }
+}
