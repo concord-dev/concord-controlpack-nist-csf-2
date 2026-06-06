@@ -1,0 +1,42 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: NIST-CSF-2-ID.AM-01
+  name: hardware-inventory-tracked
+  title: Inventories of authorised hardware/cloud assets are maintained
+  framework: nist-csf-2
+  category: Identify
+  severity: high
+  tags: [nist-csf, identify, inventory]
+  owners:
+    - team: platform
+spec:
+  description: |
+    NIST CSF 2.0 ID.AM-01 requires inventories of hardware managed by
+    the organization to be maintained. For cloud-first organizations,
+    Concord verifies AWS Config recorder is enabled (provides the
+    authoritative resource inventory) and that every EC2 instance is
+    tagged with required ownership fields.
+  rationale: |
+    Cloud-native version of ID.AM-01 — the "hardware" is EC2/EKS
+    workloads, and Config recorder is the inventory.
+  evidence:
+    - id: ec2_inventory
+      source: aws
+      type: ec2_inventory
+      fixture: ../tests/fixtures/ID.AM-01-pass.json
+      params:
+        region: ${env.AWS_REGION}
+  policy:
+    engine: rego
+    package: concord.nist_csf_2.id_am_01
+    file: ../policies/id_am_01.rego
+  remediation:
+    runbook: docs/remediation/csf-ID.AM-01.md
+    auto_fix: false
+    estimated_effort: 1d
+  mappings:
+    nist_csf: ["ID.AM-01"]
+    iso27001: ["A.5.9", "A.5.23"]
+  status: stable
+  blocking: true

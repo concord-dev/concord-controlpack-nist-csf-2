@@ -1,0 +1,8 @@
+{
+  "kind": "information_security_policy",
+  "signature_verified": false,
+  "attested_fields": {
+    "approval_date": "2024-01-01T00:00:00Z",
+    "next_review_due": "2024-12-31T00:00:00Z"
+  }
+}

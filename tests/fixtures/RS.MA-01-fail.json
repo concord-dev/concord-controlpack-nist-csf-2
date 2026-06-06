@@ -1,0 +1,8 @@
+{
+  "kind": "incident_response_plan",
+  "signature_verified": false,
+  "attested_fields": {
+    "version": "1.0",
+    "tabletop_age_days": 500
+  }
+}

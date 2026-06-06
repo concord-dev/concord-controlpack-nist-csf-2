@@ -1,0 +1,37 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: NIST-CSF-2-PR.DS-02
+  name: data-in-transit-encrypted
+  title: S3 buckets enforce TLS on every request via bucket policy
+  framework: nist-csf-2
+  category: Protect
+  severity: critical
+  tags: [nist-csf, protect, tls]
+  owners:
+    - team: platform
+spec:
+  description: |
+    NIST CSF 2.0 PR.DS-02 requires data-in-transit to be protected.
+    Concord verifies every S3 bucket carries a bucket policy that
+    denies requests where aws:SecureTransport is false.
+  evidence:
+    - id: bucket_policies
+      source: aws
+      type: s3_bucket_policy
+      fixture: ../tests/fixtures/PR.DS-02-pass.json
+      params:
+        region: ${env.AWS_REGION}
+  policy:
+    engine: rego
+    package: concord.nist_csf_2.pr_ds_02
+    file: ../policies/pr_ds_02.rego
+  mappings:
+    nist_csf: ["PR.DS-02"]
+    iso27001: ["A.8.24"]
+    soc2: ["CC6.7"]
+    nist_800_53: ["SC-8"]
+    hipaa: ["164.312(e)(1)"]
+    pci_dss: ["4.1"]
+  status: stable
+  blocking: true

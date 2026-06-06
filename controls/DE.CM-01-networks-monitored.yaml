@@ -1,0 +1,33 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: NIST-CSF-2-DE.CM-01
+  name: networks-monitored-vpc-flow-logs
+  title: VPC flow logs are enabled in every VPC
+  framework: nist-csf-2
+  category: Detect
+  severity: high
+  tags: [nist-csf, detect, networks]
+  owners:
+    - team: platform
+spec:
+  description: |
+    NIST CSF 2.0 DE.CM-01 requires networks and network services to
+    be monitored. Concord verifies every VPC has flow logs enabled.
+  evidence:
+    - id: vpc_flow_logs
+      source: aws
+      type: vpc_flow_logs
+      fixture: ../tests/fixtures/DE.CM-01-pass.json
+      params:
+        region: ${env.AWS_REGION}
+  policy:
+    engine: rego
+    package: concord.nist_csf_2.de_cm_01
+    file: ../policies/de_cm_01.rego
+  mappings:
+    nist_csf: ["DE.CM-01"]
+    iso27001: ["A.8.20"]
+    cis_aws: ["5.2"]
+  status: stable
+  blocking: true

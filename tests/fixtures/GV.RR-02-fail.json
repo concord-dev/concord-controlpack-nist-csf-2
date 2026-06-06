@@ -1,0 +1,9 @@
+{
+  "kind": "cyber_raci",
+  "signature_verified": false,
+  "attested_fields": {
+    "functions": [
+      {"id": "incident_response", "accountable": null}
+    ]
+  }
+}

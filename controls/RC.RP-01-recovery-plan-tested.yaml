@@ -1,0 +1,35 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: NIST-CSF-2-RC.RP-01
+  name: recovery-plan-tested
+  title: Backup restoration is tested on a documented cadence with a successful last run
+  framework: nist-csf-2
+  category: Recover
+  severity: high
+  tags: [nist-csf, recover, backup]
+  owners:
+    - team: platform
+spec:
+  description: |
+    NIST CSF 2.0 RC.RP-01 requires the recovery plan to be executed
+    and updated. Concord verifies the latest scheduled restore-test
+    has run in the last 90 days and was successful.
+  evidence:
+    - id: restore_tests
+      source: aws
+      type: backup_restore_tests
+      fixture: ../tests/fixtures/RC.RP-01-pass.json
+      params:
+        region: ${env.AWS_REGION}
+  policy:
+    engine: rego
+    package: concord.nist_csf_2.rc_rp_01
+    file: ../policies/rc_rp_01.rego
+  mappings:
+    nist_csf: ["RC.RP-01"]
+    iso27001: ["A.8.13"]
+    soc2: ["A1.3"]
+    nist_800_53: ["CP-9(1)"]
+  status: stable
+  blocking: true

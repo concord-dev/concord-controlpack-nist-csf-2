@@ -1,0 +1,10 @@
+{
+  "kind": "org_mission_context",
+  "owner": "ceo@acme.com",
+  "signature_verified": true,
+  "attested_fields": {
+    "mission_statement": "provide reliable healthcare data services to providers",
+    "primary_stakeholders": ["providers", "patients", "regulators"],
+    "risk_appetite": "low for ePHI confidentiality; moderate for service availability"
+  }
+}

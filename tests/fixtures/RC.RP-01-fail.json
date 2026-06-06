@@ -1,0 +1,5 @@
+{
+  "tests": [
+    {"id": "rt-2025-12", "age_days": 200, "status": "failed", "data_set": "prod-postgres"}
+  ]
+}

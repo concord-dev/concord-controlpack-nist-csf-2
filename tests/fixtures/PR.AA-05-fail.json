@@ -1,0 +1,5 @@
+{
+  "administrators": [
+    {"username": "a", "has_access_key": true, "mfa_enabled": false}
+  ]
+}

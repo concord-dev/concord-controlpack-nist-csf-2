@@ -1,0 +1,38 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: NIST-CSF-2-PR.AA-01
+  name: identity-issued-and-tracked
+  title: Identities are issued, managed, and revoked under documented processes
+  framework: nist-csf-2
+  category: Protect
+  severity: critical
+  tags: [nist-csf, protect, identity]
+  owners:
+    - team: it-security
+spec:
+  description: |
+    NIST CSF 2.0 PR.AA-01 requires identities and credentials to be
+    issued, managed, verified, revoked, and audited. Concord verifies
+    every Okta ACTIVE user has phishing-resistant MFA enrolled.
+  rationale: |
+    PR.AA-01 audits center on credential strength. Anything short of
+    TOTP / WebAuthn fails.
+  evidence:
+    - id: okta_users
+      source: okta
+      type: users_mfa
+      fixture: ../tests/fixtures/PR.AA-01-pass.json
+      params:
+        org_url: ${env.OKTA_ORG_URL}
+  policy:
+    engine: rego
+    package: concord.nist_csf_2.pr_aa_01
+    file: ../policies/pr_aa_01.rego
+  mappings:
+    nist_csf: ["PR.AA-01"]
+    iso27001: ["A.5.16", "A.8.5"]
+    soc2: ["CC6.1"]
+    hipaa: ["164.308(a)(5)(ii)(C)"]
+  status: stable
+  blocking: true

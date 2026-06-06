@@ -1,0 +1,43 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: NIST-CSF-2-GV.RR-02
+  name: cyber-roles-and-responsibilities
+  title: Cybersecurity roles, responsibilities, and authorities are documented and assigned
+  framework: nist-csf-2
+  category: Govern
+  severity: high
+  tags: [nist-csf, govern, raci]
+  owners:
+    - team: it-security
+spec:
+  description: |
+    NIST CSF 2.0 GV.RR-02 requires cyber roles, responsibilities, and
+    authorities to be established and communicated. Concord reads a
+    cosigned RACI attestation listing the cybersecurity functions and
+    their accountable owners.
+  rationale: |
+    GV.RR-02 audits hinge on whether named individuals (not "the
+    security team") own each function. The RACI YAML check enforces
+    this.
+  evidence:
+    - id: attestation
+      source: attestation
+      type: policy_attestation
+      fixture: ../tests/fixtures/GV.RR-02-pass.json
+      params:
+        kind: cyber_raci
+  policy:
+    engine: rego
+    package: concord.nist_csf_2.gv_rr_02
+    file: ../policies/gv_rr_02.rego
+  remediation:
+    runbook: docs/remediation/csf-GV.RR-02.md
+    auto_fix: false
+    estimated_effort: 1w
+  mappings:
+    nist_csf: ["GV.RR-02"]
+    iso27001: ["A.5.2"]
+    soc2: ["CC1.3"]
+  status: stable
+  blocking: true

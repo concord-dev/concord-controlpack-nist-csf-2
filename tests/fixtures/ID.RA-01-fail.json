@@ -1,0 +1,7 @@
+{
+  "fetched_at": "2026-06-06T10:00:00Z",
+  "scan_age_days": 45,
+  "issues": [
+    {"id": "SNYK-orphan", "severity": "high", "status": "open", "validated": false}
+  ]
+}

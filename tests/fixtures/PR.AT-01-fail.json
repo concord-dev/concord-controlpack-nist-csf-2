@@ -1,0 +1,7 @@
+{
+  "kind": "training_register",
+  "signature_verified": true,
+  "attested_fields": {
+    "active_people": [{"email": "stale@acme.com", "last_completion_days_ago": 500}]
+  }
+}

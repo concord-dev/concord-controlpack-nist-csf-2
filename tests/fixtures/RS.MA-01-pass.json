@@ -1,0 +1,12 @@
+{
+  "kind": "incident_response_plan",
+  "signature_verified": true,
+  "attested_fields": {
+    "version": "3.2",
+    "owner": "ciso@acme.com",
+    "last_tabletop_at": "2026-03-15",
+    "tabletop_age_days": 80,
+    "rto_hours": 4,
+    "rpo_hours": 1
+  }
+}

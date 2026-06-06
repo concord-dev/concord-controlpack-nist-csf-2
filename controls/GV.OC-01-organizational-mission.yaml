@@ -1,0 +1,40 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: NIST-CSF-2-GV.OC-01
+  name: organizational-mission-understood
+  title: Organizational mission and stakeholders documented and current
+  framework: nist-csf-2
+  category: Govern
+  severity: medium
+  tags: [nist-csf, govern]
+  owners:
+    - team: leadership
+spec:
+  description: |
+    NIST CSF 2.0 GV.OC-01 requires the organizational mission to be
+    understood and to inform cybersecurity risk management. Concord
+    reads a signed mission-and-context attestation.
+  rationale: |
+    GV.OC anchors why cybersecurity decisions are being made. Without
+    a documented mission, the rest of GV is unanchored.
+  evidence:
+    - id: attestation
+      source: attestation
+      type: policy_attestation
+      fixture: ../tests/fixtures/GV.OC-01-pass.json
+      params:
+        kind: org_mission_context
+  policy:
+    engine: rego
+    package: concord.nist_csf_2.gv_oc_01
+    file: ../policies/gv_oc_01.rego
+  remediation:
+    runbook: docs/remediation/csf-GV.OC-01.md
+    auto_fix: false
+    estimated_effort: 2d
+  mappings:
+    nist_csf: ["GV.OC-01"]
+    iso27001: ["4.1", "4.2"]
+  status: stable
+  blocking: false

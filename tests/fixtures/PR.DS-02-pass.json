@@ -1,0 +1,7 @@
+{
+  "buckets": [
+    {"name": "prod", "policy": {"Statement": [
+      {"Effect": "Deny", "Action": "s3:*", "Condition": {"Bool": {"aws:SecureTransport": "false"}}}
+    ]}}
+  ]
+}

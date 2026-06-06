@@ -1,0 +1,36 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: NIST-CSF-2-RS.MA-01
+  name: incident-response-plan-current
+  title: Incident response plan is documented, current, and tested
+  framework: nist-csf-2
+  category: Respond
+  severity: critical
+  tags: [nist-csf, respond, incidents]
+  owners:
+    - team: security
+spec:
+  description: |
+    NIST CSF 2.0 RS.MA-01 requires an incident response plan to be
+    executed during or after an event. Concord reads a cosigned IRP
+    attestation that records the last tabletop exercise date.
+  evidence:
+    - id: attestation
+      source: attestation
+      type: policy_attestation
+      fixture: ../tests/fixtures/RS.MA-01-pass.json
+      params:
+        kind: incident_response_plan
+  policy:
+    engine: rego
+    package: concord.nist_csf_2.rs_ma_01
+    file: ../policies/rs_ma_01.rego
+  mappings:
+    nist_csf: ["RS.MA-01"]
+    iso27001: ["A.5.24", "A.5.25"]
+    soc2: ["CC7.3", "CC7.4"]
+    nist_800_53: ["IR-4", "IR-8"]
+    hipaa: ["164.308(a)(6)(ii)"]
+  status: stable
+  blocking: true

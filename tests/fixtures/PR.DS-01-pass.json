@@ -1,0 +1,5 @@
+{
+  "buckets": [{"name": "prod-records", "tags": {"sensitive": "true"}, "encryption": {"configured": true}}],
+  "rds_instances": [],
+  "ebs_volumes": []
+}

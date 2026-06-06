@@ -1,0 +1,35 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: NIST-CSF-2-DE.AE-03
+  name: events-analyzed-correlation
+  title: Multi-source telemetry is correlated; CloudTrail covers every region
+  framework: nist-csf-2
+  category: Detect
+  severity: critical
+  tags: [nist-csf, detect]
+  owners:
+    - team: security
+spec:
+  description: |
+    NIST CSF 2.0 DE.AE-03 requires events to be collected and correlated
+    from multiple sources and sensors. The AWS-side minimum is
+    CloudTrail multi-region + management events.
+  evidence:
+    - id: cloudtrail
+      source: aws
+      type: cloudtrail_trails
+      fixture: ../tests/fixtures/DE.AE-03-pass.json
+      params:
+        region: ${env.AWS_REGION}
+  policy:
+    engine: rego
+    package: concord.nist_csf_2.de_ae_03
+    file: ../policies/de_ae_03.rego
+  mappings:
+    nist_csf: ["DE.AE-03"]
+    iso27001: ["A.8.16"]
+    soc2: ["CC7.2"]
+    nist_800_53: ["AU-2", "CA-7"]
+  status: stable
+  blocking: true

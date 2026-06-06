@@ -1,0 +1,9 @@
+{
+  "kind": "vendor_register",
+  "attested_fields": {
+    "vendors": [
+      {"name": "Datadog", "tier": "tier_1",
+       "certifications": [{"type": "soc2", "days_until_expiry": 200, "renewal_in_progress": false}]}
+    ]
+  }
+}

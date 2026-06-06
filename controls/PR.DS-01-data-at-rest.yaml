@@ -1,0 +1,36 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: NIST-CSF-2-PR.DS-01
+  name: data-at-rest-encrypted
+  title: Data at rest is encrypted (S3, RDS, EBS)
+  framework: nist-csf-2
+  category: Protect
+  severity: critical
+  tags: [nist-csf, protect, encryption]
+  owners:
+    - team: platform
+spec:
+  description: |
+    NIST CSF 2.0 PR.DS-01 requires data-at-rest to be protected.
+    Concord verifies S3, RDS, and EBS resources tagged
+    sensitive=true are encrypted with KMS.
+  evidence:
+    - id: encryption_status
+      source: aws
+      type: storage_encryption
+      fixture: ../tests/fixtures/PR.DS-01-pass.json
+      params:
+        region: ${env.AWS_REGION}
+  policy:
+    engine: rego
+    package: concord.nist_csf_2.pr_ds_01
+    file: ../policies/pr_ds_01.rego
+  mappings:
+    nist_csf: ["PR.DS-01"]
+    iso27001: ["A.8.24"]
+    soc2: ["CC6.7"]
+    nist_800_53: ["SC-28"]
+    hipaa: ["164.312(a)(2)(iv)"]
+  status: stable
+  blocking: true

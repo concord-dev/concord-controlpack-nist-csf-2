@@ -1,0 +1,11 @@
+{
+  "kind": "vendor_register",
+  "signature_verified": false,
+  "attested_fields": {
+    "vendors": [
+      {"name": "OldVendor", "tier": "tier_1",
+       "certifications": [{"type": "soc2", "expired": true, "expires_at": "2024-01-01"}]},
+      {"name": "UntierVendor", "certifications": []}
+    ]
+  }
+}

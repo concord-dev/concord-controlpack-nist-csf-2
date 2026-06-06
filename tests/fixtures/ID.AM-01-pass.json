@@ -1,0 +1,8 @@
+{
+  "fetched_at": "2026-06-06T10:00:00Z",
+  "config_recorder_active": true,
+  "instances": [
+    {"id": "i-aaa", "tags": {"owner": "platform-team", "environment": "prod", "data_classification": "ephi"}},
+    {"id": "i-bbb", "tags": {"owner": "data-team", "environment": "staging", "data_classification": "internal"}}
+  ]
+}

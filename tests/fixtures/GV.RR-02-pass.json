@@ -1,0 +1,13 @@
+{
+  "kind": "cyber_raci",
+  "signature_verified": true,
+  "attested_fields": {
+    "functions": [
+      {"id": "incident_response", "accountable": "ciso@acme.com"},
+      {"id": "access_management", "accountable": "it-director@acme.com"},
+      {"id": "vulnerability_management", "accountable": "ciso@acme.com"},
+      {"id": "vendor_risk_management", "accountable": "vendor-mgmt@acme.com"},
+      {"id": "data_protection", "accountable": "dpo@acme.com"}
+    ]
+  }
+}
