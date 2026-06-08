@@ -1,0 +1,40 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: NIST-CSF-2-RS.AN-07
+  name: nist-csf-2-rs-an-07
+  title: Incident data and metadata are collected and integrity preserved
+  framework: nist-csf-2
+  severity: medium
+  tags: []
+  owners:
+    - team: concord-dev
+
+spec:
+  description: |
+    TODO: describe what NIST-CSF-2-RS.AN-07 enforces.
+
+  evidence:
+    - id: nist_csf_2_rs_an_07
+      source: attestation
+      type: policy_attestation
+      fixture: ../tests/fixtures/nist-csf-2-rs-an-07-pass.json
+      params:
+              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
+              signers:
+                - dpo@acme.com
+              max_age_days: 365
+
+  policy:
+    engine: rego
+    package: concord.nist_csf_2.nist_csf_2_rs_an_07
+    file: ../policies/nist-csf-2-rs-an-07.rego
+
+  remediation:
+    runbook: docs/remediation/nist-csf-2-rs-an-07.md
+    auto_fix: false
+    estimated_effort: 30m
+
+  status: draft
+  blocking: false

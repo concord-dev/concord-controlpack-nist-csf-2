@@ -1,0 +1,38 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: NIST-CSF-2-RS.AN-03
+  name: nist-csf-2-rs-an-03
+  title: Analysis is performed to establish what has taken place during an incident
+  framework: nist-csf-2
+  severity: medium
+  tags: []
+  owners:
+    - team: concord-dev
+
+spec:
+  description: |
+    TODO: describe what NIST-CSF-2-RS.AN-03 enforces.
+
+  evidence:
+    - id: nist_csf_2_rs_an_03
+      source: aws
+      type: aws_resource_inventory
+      fixture: ../tests/fixtures/nist-csf-2-rs-an-03-pass.json
+      params:
+              service: TODO  # e.g. s3, iam, kms
+              region: us-east-1
+
+  policy:
+    engine: rego
+    package: concord.nist_csf_2.nist_csf_2_rs_an_03
+    file: ../policies/nist-csf-2-rs-an-03.rego
+
+  remediation:
+    runbook: docs/remediation/nist-csf-2-rs-an-03.md
+    auto_fix: false
+    estimated_effort: 30m
+
+  status: draft
+  blocking: false

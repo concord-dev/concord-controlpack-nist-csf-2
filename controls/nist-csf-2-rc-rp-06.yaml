@@ -1,0 +1,40 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: NIST-CSF-2-RC.RP-06
+  name: nist-csf-2-rc-rp-06
+  title: End of incident recovery is declared based on criteria
+  framework: nist-csf-2
+  severity: low
+  tags: []
+  owners:
+    - team: concord-dev
+
+spec:
+  description: |
+    TODO: describe what NIST-CSF-2-RC.RP-06 enforces.
+
+  evidence:
+    - id: nist_csf_2_rc_rp_06
+      source: attestation
+      type: policy_attestation
+      fixture: ../tests/fixtures/nist-csf-2-rc-rp-06-pass.json
+      params:
+              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
+              signers:
+                - dpo@acme.com
+              max_age_days: 365
+
+  policy:
+    engine: rego
+    package: concord.nist_csf_2.nist_csf_2_rc_rp_06
+    file: ../policies/nist-csf-2-rc-rp-06.rego
+
+  remediation:
+    runbook: docs/remediation/nist-csf-2-rc-rp-06.md
+    auto_fix: false
+    estimated_effort: 30m
+
+  status: draft
+  blocking: false

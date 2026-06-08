@@ -1,0 +1,40 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: NIST-CSF-2-RS.AN-08
+  name: nist-csf-2-rs-an-08
+  title: Magnitude of incident is estimated and validated
+  framework: nist-csf-2
+  severity: low
+  tags: []
+  owners:
+    - team: concord-dev
+
+spec:
+  description: |
+    TODO: describe what NIST-CSF-2-RS.AN-08 enforces.
+
+  evidence:
+    - id: nist_csf_2_rs_an_08
+      source: attestation
+      type: policy_attestation
+      fixture: ../tests/fixtures/nist-csf-2-rs-an-08-pass.json
+      params:
+              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
+              signers:
+                - dpo@acme.com
+              max_age_days: 365
+
+  policy:
+    engine: rego
+    package: concord.nist_csf_2.nist_csf_2_rs_an_08
+    file: ../policies/nist-csf-2-rs-an-08.rego
+
+  remediation:
+    runbook: docs/remediation/nist-csf-2-rs-an-08.md
+    auto_fix: false
+    estimated_effort: 30m
+
+  status: draft
+  blocking: false
