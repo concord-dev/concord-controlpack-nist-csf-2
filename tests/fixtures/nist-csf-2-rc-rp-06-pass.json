@@ -1,11 +1,11 @@
 {
-  "nist_csf_2_rc_rp_06": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "recovery_completion",
+  "signature_verified": true,
+  "attested_fields": {
+    "completion_criteria": "all tier-1 services meet their SLOs, no open recovery tasks remain, and root cause is contained and verified",
+    "decision_authority": "the incident commander formally declares end of recovery with concurrence from the affected service owner",
+    "post_incident_review": "a blameless post-incident review is scheduled within 5 business days and its action items are tracked to closure",
+    "last_reviewed_at": "2026-06-01",
+    "review_age_days": 39
   }
 }

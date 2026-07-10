@@ -1,20 +1,34 @@
-package concord.nist_csf_2.nist_csf_2_rs_mi_01
+package concord.nist_csf_2.rs_mi_01
 
 import rego.v1
-import data.concord.lib.attestation
-import data.concord.lib.evidence
+
+max_review_age_days := 365
+
+required_fields := {"containment_playbooks", "isolation_procedures",
+                    "decision_authority", "last_reviewed_at"}
 
 deny contains msg if {
-	not evidence.present(input, "nist_csf_2_rs_mi_01")
-	msg := "NIST-CSF-2-RS.MI-01: no signed attestation submitted"
+    not input.attestation
+    msg := "no incident-containment attestation collected"
 }
 
 deny contains msg if {
-	not attestation.not_expired(input.nist_csf_2_rs_mi_01)
-	msg := sprintf("NIST-CSF-2-RS.MI-01: attestation expired (expires_at=%s)", [input.nist_csf_2_rs_mi_01.expires_at])
+    input.attestation.kind != "incident_containment"
+    msg := sprintf("attestation kind is %q, expected \"incident_containment\"", [input.attestation.kind])
 }
 
 deny contains msg if {
-	not attestation.fresh(input.nist_csf_2_rs_mi_01, 365)
-	msg := sprintf("NIST-CSF-2-RS.MI-01: attestation not reviewed in 365 days (last_review_at=%s)", [input.nist_csf_2_rs_mi_01.last_review_at])
+    not input.attestation.signature_verified
+    msg := "incident-containment attestation cosign signature did not verify"
+}
+
+deny contains msg if {
+    some f in required_fields
+    not input.attestation.attested_fields[f]
+    msg := sprintf("incident-containment attestation missing field: %s", [f])
+}
+
+deny contains msg if {
+    input.attestation.attested_fields.review_age_days > max_review_age_days
+    msg := sprintf("containment playbooks last reviewed %d days ago (max %d)", [input.attestation.attested_fields.review_age_days, max_review_age_days])
 }

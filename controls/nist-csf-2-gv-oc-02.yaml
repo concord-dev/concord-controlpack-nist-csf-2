@@ -3,38 +3,62 @@ kind: Control
 
 metadata:
   id: NIST-CSF-2-GV.OC-02
-  name: nist-csf-2-gv-oc-02
-  title: Internal/external stakeholders are understood and prioritized
+  name: stakeholders-understood-prioritized
+  title: Internal and external stakeholders are understood and prioritized
   framework: nist-csf-2
+  category: Govern
   severity: medium
-  tags: []
+  tags:
+    - nist-csf
+    - govern
+    - organizational-context
   owners:
-    - team: concord-dev
+    - team: leadership
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-GV.OC-02 enforces.
+    NIST CSF 2.0 GV.OC-02 requires that internal and external
+    stakeholders are understood, and that their needs and expectations
+    regarding cybersecurity risk management are understood and
+    prioritized. Concord reads a cosigned organizational-context
+    attestation that enumerates the internal and external stakeholders
+    and records the basis on which they are prioritized.
+
+  rationale: |
+    Stakeholder identification anchors the rest of the Govern function:
+    risk appetite, policy, and role assignments are only defensible when
+    the organization can name who its decisions affect and answer to.
+    Auditors treat an empty or stale stakeholder register as evidence
+    that governance is being performed on paper only.
 
   evidence:
-    - id: nist_csf_2_gv_oc_02
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-gv-oc-02-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: organizational_context
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_gv_oc_02
+    package: concord.nist_csf_2.gv_oc_02
     file: ../policies/nist-csf-2-gv-oc-02.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-gv-oc-02.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "GV.OC-02"
+    nist_800_53:
+      - "PM-11"
+      - "RA-9"
+    iso27001:
+      - "4.2"
+    soc2:
+      - "CC3.1"
+
+  status: stable
+  blocking: true

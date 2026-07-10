@@ -3,38 +3,62 @@ kind: Control
 
 metadata:
   id: NIST-CSF-2-GV.RM-02
-  name: nist-csf-2-gv-rm-02
-  title: Risk appetite and risk tolerance are established and communicated
+  name: risk-appetite-and-tolerance
+  title: Risk appetite and risk tolerance statements are established and communicated
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Govern
+  severity: high
+  tags:
+    - nist-csf
+    - govern
+    - risk-management
   owners:
-    - team: concord-dev
+    - team: risk
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-GV.RM-02 enforces.
+    NIST CSF 2.0 GV.RM-02 requires that risk appetite and risk tolerance
+    statements are established, communicated, and maintained. Concord
+    reads a cosigned risk-appetite attestation that captures the risk
+    appetite statement, the quantified tolerance levels, and the
+    authority that approved them.
+
+  rationale: |
+    Risk appetite and tolerance translate the risk-management strategy
+    into thresholds that make individual risk-acceptance decisions
+    consistent and auditable. Without an approved, quantified tolerance,
+    exception approvals and risk treatment are ad hoc and cannot be
+    defended to an auditor or the board.
 
   evidence:
-    - id: nist_csf_2_gv_rm_02
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-gv-rm-02-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: risk_appetite
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_gv_rm_02
+    package: concord.nist_csf_2.gv_rm_02
     file: ../policies/nist-csf-2-gv-rm-02.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-gv-rm-02.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 3d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "GV.RM-02"
+    nist_800_53:
+      - "PM-9"
+      - "RA-3"
+    iso27001:
+      - "6.1.2"
+      - "A.5.1"
+    soc2:
+      - "CC3.1"
+
+  status: stable
+  blocking: true

@@ -6,35 +6,59 @@ metadata:
   name: nist-csf-2-gv-rr-03
   title: Adequate resources are allocated commensurate with cybersecurity strategy
   framework: nist-csf-2
+  category: Govern
   severity: medium
-  tags: []
+  tags:
+    - nist-csf
+    - govern
+    - resources
   owners:
-    - team: concord-dev
+    - team: it-security
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-GV.RR-03 enforces.
+    NIST CSF 2.0 GV.RR-03 requires adequate resources — budget, staffing,
+    and tooling — to be allocated commensurate with the organization's
+    cybersecurity risk strategy and role expectations. Concord reads a
+    cosigned resource-allocation attestation that records the approved
+    budget, the staffing plan, the tooling investment, and the date the
+    allocation was last reviewed.
+
+  rationale: |
+    A cybersecurity strategy that is not funded is a paper exercise.
+    Auditors use GV.RR-03 to confirm that leadership backed the strategy
+    with real money, headcount, and tooling. The attestation makes the
+    committed resources explicit and requires the allocation to be
+    reviewed at least annually so it keeps pace with the strategy.
 
   evidence:
-    - id: nist_csf_2_gv_rr_03
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-gv-rr-03-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: resource_allocation
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_gv_rr_03
+    package: concord.nist_csf_2.gv_rr_03
     file: ../policies/nist-csf-2-gv-rr-03.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-gv-rr-03.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "GV.RR-03"
+    nist_800_53:
+      - "SA-2"
+      - "PM-3"
+    iso27001:
+      - "A.5.4"
+    soc2:
+      - "CC1.4"
+
+  status: stable
+  blocking: true

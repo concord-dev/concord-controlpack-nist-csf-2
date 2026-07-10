@@ -1,8 +1,10 @@
 {
-  "nist_csf_2_de_ae_08": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": true, "reason": "" }
-    ]
+  "kind": "incident_declaration",
+  "signature_verified": true,
+  "attested_fields": {
+    "declaration_criteria": "An event is declared an incident on confirmed unauthorized access, data exposure, or availability loss beyond SLA",
+    "severity_matrix": {"sev1": "material business or data impact", "sev2": "contained but confirmed compromise", "sev3": "suspected, under investigation"},
+    "decision_authority": "on-call incident commander, escalating to the CISO for sev1",
+    "last_reviewed_at": "2026-06-15T00:00:00Z"
   }
 }

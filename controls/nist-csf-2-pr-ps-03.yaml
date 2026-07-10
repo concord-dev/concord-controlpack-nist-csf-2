@@ -4,35 +4,51 @@ kind: Control
 metadata:
   id: NIST-CSF-2-PR.PS-03
   name: nist-csf-2-pr-ps-03
-  title: Hardware is maintained, replaced, and removed commensurate with risk
+  title: Hardware is managed throughout its lifecycle
   framework: nist-csf-2
-  severity: high
-  tags: []
+  category: Protect
+  severity: medium
+  tags: [nist-csf, protect, hardware, lifecycle, asset-management]
   owners:
-    - team: concord-dev
+    - team: it-operations
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-PR.PS-03 enforces.
+    NIST CSF 2.0 PR.PS-03 requires that hardware is managed throughout its
+    lifecycle — maintained, replaced, and removed — commensurate with risk.
+    Concord reads a signed attestation for the hardware lifecycle program and
+    verifies that it documents the maintenance process, the criteria used to
+    replace aging or unsupported hardware, that retired hardware is securely
+    sanitized or destroyed before disposal, and a recent review date.
+  rationale: |
+    Unmaintained or end-of-life hardware accumulates unpatched firmware and
+    failure risk, and improperly disposed media is a common source of data
+    leakage. Documented maintenance, replacement, and media-sanitization
+    practices are the baseline for managing hardware risk over its lifecycle.
 
   evidence:
-    - id: nist_csf_2_pr_ps_03
-      source: aws
-      type: aws_resource_inventory
+    - id: attestation
+      source: attestation
+      type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-pr-ps-03-pass.json
       params:
-              service: TODO  # e.g. s3, iam, kms
-              region: us-east-1
+        kind: hardware_lifecycle
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_pr_ps_03
+    package: concord.nist_csf_2.pr_ps_03
     file: ../policies/nist-csf-2-pr-ps-03.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-pr-ps-03.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 1d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf: ["PR.PS-03"]
+    nist_800_53: ["MA-2", "MP-6"]
+    iso27001: ["A.7.14"]
+    soc2: ["CC6.5"]
+
+  status: stable
+  blocking: true

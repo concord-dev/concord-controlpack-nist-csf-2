@@ -1,8 +1,10 @@
 {
-  "nist_csf_2_pr_ps_03": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": true, "reason": "" }
-    ]
+  "kind": "hardware_lifecycle",
+  "signature_verified": true,
+  "attested_fields": {
+    "maintenance_process": "Vendor support contracts with firmware/patch cadence tracked in the CMDB",
+    "replacement_criteria": "Replace at end-of-support or after 4 years, whichever comes first",
+    "secure_disposal": true,
+    "last_reviewed_at": "2026-06-04T00:00:00Z"
   }
 }

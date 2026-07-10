@@ -4,37 +4,65 @@ kind: Control
 metadata:
   id: NIST-CSF-2-GV.RR-04
   name: nist-csf-2-gv-rr-04
-  title: Cybersecurity is included in HR practices
+  title: Cybersecurity is included in human resources practices
   framework: nist-csf-2
+  category: Govern
   severity: medium
-  tags: []
+  tags:
+    - nist-csf
+    - govern
+    - personnel-security
   owners:
-    - team: concord-dev
+    - team: people-ops
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-GV.RR-04 enforces.
+    NIST CSF 2.0 GV.RR-04 requires cybersecurity to be included in human
+    resources practices across the personnel lifecycle. Concord reads a
+    cosigned HR-security-integration attestation covering the pre-hire
+    screening process, the security steps performed at onboarding, the
+    offboarding process that removes access, and the date the integration
+    was last reviewed.
+
+  rationale: |
+    Most insider and access-related findings trace back to gaps at hire
+    or departure. GV.RR-04 confirms that security is wired into HR rather
+    than bolted on. The attestation forces screening, onboarding, and
+    offboarding controls to be named and re-reviewed so departing staff
+    lose access promptly and new staff start with security obligations.
 
   evidence:
-    - id: nist_csf_2_gv_rr_04
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-gv-rr-04-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: hr_security_integration
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_gv_rr_04
+    package: concord.nist_csf_2.gv_rr_04
     file: ../policies/nist-csf-2-gv-rr-04.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-gv-rr-04.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "GV.RR-04"
+    nist_800_53:
+      - "PS-2"
+      - "PS-3"
+      - "PS-4"
+      - "PS-5"
+    iso27001:
+      - "A.6.1"
+      - "A.6.2"
+      - "A.6.5"
+    soc2:
+      - "CC1.4"
+
+  status: stable
+  blocking: true

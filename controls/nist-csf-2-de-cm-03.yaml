@@ -3,36 +3,68 @@ kind: Control
 
 metadata:
   id: NIST-CSF-2-DE.CM-03
-  name: nist-csf-2-de-cm-03
-  title: Personnel activity and technology usage are monitored
+  name: personnel-activity-monitored
+  title: Personnel activity and technology usage are monitored to find adverse events
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Detect
+  severity: high
+  tags:
+    - nist-csf
+    - detect
+    - monitoring
+    - cloudtrail
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-DE.CM-03 enforces.
+    NIST CSF 2.0 DE.CM-03 requires that personnel activity and technology usage
+    are monitored to find potentially adverse events. Concord verifies that AWS
+    CloudTrail records personnel (user) activity across every region via a
+    multi-region trail, and that the trail logs management (control-plane)
+    events for both read and write actions plus at least one data-event
+    selector, so that both privileged user actions and data-plane technology
+    usage are captured.
+
+  rationale: |
+    Insider misuse and account compromise are visible only if the actions of
+    people and services are logged comprehensively. A trail that covers a single
+    region leaves activity in every other region invisible; one that logs write
+    but not read actions misses reconnaissance and data browsing; and one with
+    no data-event selector never sees object-level access to stored information.
+    Because a partial log cannot support after-the-fact accountability, Concord
+    fails closed when no evidence is collected and denies each missing category
+    independently.
 
   evidence:
-    - id: nist_csf_2_de_cm_03
+    - id: cloudtrail
       source: aws
-      type: aws_resource_inventory
+      type: cloudtrail_trails
       fixture: ../tests/fixtures/nist-csf-2-de-cm-03-pass.json
       params:
-              service: TODO  # e.g. s3, iam, kms
-              region: us-east-1
+        region: ${env.AWS_REGION}
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_de_cm_03
+    package: concord.nist_csf_2.de_cm_03
     file: ../policies/nist-csf-2-de-cm-03.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-de-cm-03.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 1h
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "DE.CM-03"
+    nist_800_53:
+      - "SI-4"
+      - "CA-7"
+      - "AU-6"
+    iso27001:
+      - "A.8.16"
+    soc2:
+      - "CC7.2"
+
+  status: stable
+  blocking: true

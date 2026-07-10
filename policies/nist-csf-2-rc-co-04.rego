@@ -1,20 +1,34 @@
-package concord.nist_csf_2.nist_csf_2_rc_co_04
+package concord.nist_csf_2.rc_co_04
 
 import rego.v1
-import data.concord.lib.attestation
-import data.concord.lib.evidence
+
+max_review_age_days := 365
+
+required_fields := {"public_comms_process", "approval_authority",
+                    "channels", "last_reviewed_at"}
 
 deny contains msg if {
-	not evidence.present(input, "nist_csf_2_rc_co_04")
-	msg := "NIST-CSF-2-RC.CO-04: no signed attestation submitted"
+    not input.attestation
+    msg := "no public-recovery-updates attestation collected"
 }
 
 deny contains msg if {
-	not attestation.not_expired(input.nist_csf_2_rc_co_04)
-	msg := sprintf("NIST-CSF-2-RC.CO-04: attestation expired (expires_at=%s)", [input.nist_csf_2_rc_co_04.expires_at])
+    input.attestation.kind != "public_recovery_updates"
+    msg := sprintf("attestation kind is %q, expected \"public_recovery_updates\"", [input.attestation.kind])
 }
 
 deny contains msg if {
-	not attestation.fresh(input.nist_csf_2_rc_co_04, 365)
-	msg := sprintf("NIST-CSF-2-RC.CO-04: attestation not reviewed in 365 days (last_review_at=%s)", [input.nist_csf_2_rc_co_04.last_review_at])
+    not input.attestation.signature_verified
+    msg := "public-recovery-updates attestation cosign signature did not verify"
+}
+
+deny contains msg if {
+    some f in required_fields
+    not input.attestation.attested_fields[f]
+    msg := sprintf("public-recovery-updates attestation missing field: %s", [f])
+}
+
+deny contains msg if {
+    input.attestation.attested_fields.review_age_days > max_review_age_days
+    msg := sprintf("public-recovery-updates process last reviewed %d days ago (max %d)", [input.attestation.attested_fields.review_age_days, max_review_age_days])
 }

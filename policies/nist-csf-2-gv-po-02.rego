@@ -1,20 +1,40 @@
-package concord.nist_csf_2.nist_csf_2_gv_po_02
+package concord.nist_csf_2.gv_po_02
 
 import rego.v1
-import data.concord.lib.attestation
-import data.concord.lib.evidence
+
+# NIST CSF 2.0 GV.PO-02 — policy for managing cybersecurity risks is
+# reviewed, updated, communicated, and enforced to reflect changes in
+# requirements, threats, technology, and organizational mission.
+
+required_fields := {"review_cycle", "communication_method",
+                    "exception_process", "last_reviewed_at"}
+
+max_review_age_days := 365
 
 deny contains msg if {
-	not evidence.present(input, "nist_csf_2_gv_po_02")
-	msg := "NIST-CSF-2-GV.PO-02: no signed attestation submitted"
+    not input.attestation
+    msg := "no cyber-policy-management attestation collected"
 }
 
 deny contains msg if {
-	not attestation.not_expired(input.nist_csf_2_gv_po_02)
-	msg := sprintf("NIST-CSF-2-GV.PO-02: attestation expired (expires_at=%s)", [input.nist_csf_2_gv_po_02.expires_at])
+    input.attestation.kind != "cyber_policy_management"
+    msg := sprintf("attestation kind is %q, expected \"cyber_policy_management\"", [input.attestation.kind])
 }
 
 deny contains msg if {
-	not attestation.fresh(input.nist_csf_2_gv_po_02, 365)
-	msg := sprintf("NIST-CSF-2-GV.PO-02: attestation not reviewed in 365 days (last_review_at=%s)", [input.nist_csf_2_gv_po_02.last_review_at])
+    some f in required_fields
+    not input.attestation.attested_fields[f]
+    msg := sprintf("cyber-policy-management attestation missing field: %s", [f])
+}
+
+deny contains msg if {
+    not input.attestation.signature_verified
+    msg := "cyber-policy-management attestation cosign signature did not verify"
+}
+
+deny contains msg if {
+    reviewed := time.parse_rfc3339_ns(input.attestation.attested_fields.last_reviewed_at)
+    age_ns := time.now_ns() - reviewed
+    age_ns > max_review_age_days * 24 * 60 * 60 * 1000000000
+    msg := sprintf("cybersecurity policy not reviewed within %d days", [max_review_age_days])
 }

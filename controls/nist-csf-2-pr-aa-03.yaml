@@ -6,33 +6,49 @@ metadata:
   name: nist-csf-2-pr-aa-03
   title: Users, services, and hardware are authenticated
   framework: nist-csf-2
-  severity: high
-  tags: []
+  category: Protect
+  severity: critical
+  tags: [nist-csf, protect, authentication, mfa, iam]
   owners:
-    - team: concord-dev
+    - team: it-security
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-PR.AA-03 enforces.
+    NIST CSF 2.0 PR.AA-03 requires that users, services, and hardware are
+    authenticated before access is granted. For interactive AWS access this
+    means multi-factor authentication on every IAM principal that can sign in
+    with a password. Concord reads the IAM credential report and fails any
+    console-enabled, non-root user that has no active MFA device. Absence of a
+    credential report is treated as a failure (fail-closed).
+  rationale: |
+    Single-factor console access is the most common initial-access vector in
+    cloud breaches. Enforcing an MFA device on every interactive identity is
+    the highest-leverage authentication control and a prerequisite for
+    trustworthy access logging and authorization decisions.
 
   evidence:
-    - id: nist_csf_2_pr_aa_03
+    - id: iam_credentials
       source: aws
-      type: aws_resource_inventory
+      type: iam_credential_report
       fixture: ../tests/fixtures/nist-csf-2-pr-aa-03-pass.json
       params:
-              service: TODO  # e.g. s3, iam, kms
-              region: us-east-1
+        region: ${env.AWS_REGION}
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_pr_aa_03
+    package: concord.nist_csf_2.pr_aa_03
     file: ../policies/nist-csf-2-pr-aa-03.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-pr-aa-03.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 1d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf: ["PR.AA-03"]
+    nist_800_53: ["IA-2", "IA-5"]
+    soc2: ["CC6.1"]
+    cis_aws: ["1.10"]
+
+  status: stable
+  blocking: true

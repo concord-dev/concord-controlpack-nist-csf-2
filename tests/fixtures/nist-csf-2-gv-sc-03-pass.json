@@ -1,11 +1,14 @@
 {
-  "nist_csf_2_gv_sc_03": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "scrm_integration",
+  "signature_verified": true,
+  "attested_fields": {
+    "integration_process": "Supplier risk findings feed the enterprise risk register and the quarterly risk review",
+    "risk_criteria": [
+      "data sensitivity handled by the supplier",
+      "supplier access to production systems",
+      "concentration and single-source dependency"
+    ],
+    "monitoring": "Continuous monitoring of tier-1 supplier security posture via attestations and alerts",
+    "last_reviewed_at": "2026-06-01T00:00:00Z"
   }
 }

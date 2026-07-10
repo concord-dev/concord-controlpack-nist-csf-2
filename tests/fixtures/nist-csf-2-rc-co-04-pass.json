@@ -1,11 +1,11 @@
 {
-  "nist_csf_2_rc_co_04": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "public_recovery_updates",
+  "signature_verified": true,
+  "attested_fields": {
+    "public_comms_process": "public recovery statements are drafted by comms, reviewed by legal, and posted only after incident-commander approval",
+    "approval_authority": "VP Communications with sign-off from the incident commander",
+    "channels": "status.acme.com status page and the @acme-status verified account only",
+    "last_reviewed_at": "2026-06-02",
+    "review_age_days": 38
   }
 }

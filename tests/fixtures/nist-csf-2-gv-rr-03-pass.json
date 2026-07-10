@@ -1,11 +1,13 @@
 {
-  "nist_csf_2_gv_rr_03": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "resource_allocation",
+  "signature_verified": true,
+  "attested_fields": {
+    "budget_allocated": "$2.4M cybersecurity budget approved for FY2026",
+    "staffing_plan": [
+      {"role": "Security Engineer", "headcount": 3, "status": "approved"},
+      {"role": "GRC Analyst", "headcount": 1, "status": "hiring"}
+    ],
+    "tooling_investment": "SIEM, EDR, and vulnerability-management platforms funded through FY2026",
+    "last_reviewed_at": "2026-06-01T00:00:00Z"
   }
 }

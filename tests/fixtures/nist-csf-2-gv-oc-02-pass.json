@@ -1,11 +1,22 @@
 {
-  "nist_csf_2_gv_oc_02": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "organizational_context",
+  "signature_verified": true,
+  "attested_fields": {
+    "internal_stakeholders": [
+      "Board of Directors",
+      "Executive Leadership Team",
+      "IT Security / SOC",
+      "Engineering",
+      "Employees"
+    ],
+    "external_stakeholders": [
+      "Customers",
+      "Regulators (SEC, EU DPAs)",
+      "Tier-1 Suppliers",
+      "Cyber Insurance Provider",
+      "Investors"
+    ],
+    "prioritization_basis": "Stakeholders ranked by contractual and regulatory obligation and by the business impact a cyber incident would have on the relationship.",
+    "last_reviewed_at": "2026-06-15T00:00:00Z"
   }
 }

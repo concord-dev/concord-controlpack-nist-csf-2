@@ -1,40 +1,49 @@
 apiVersion: concord.dev/v1
 kind: Control
-
 metadata:
   id: NIST-CSF-2-RS.AN-07
-  name: nist-csf-2-rs-an-07
-  title: Incident data and metadata are collected and integrity preserved
+  name: incident-data-integrity-preserved
+  title: Incident data and metadata are collected and their integrity preserved
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Respond
+  severity: high
+  tags: [nist-csf, respond, forensics]
   owners:
-    - team: concord-dev
-
+    - team: security
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-RS.AN-07 enforces.
-
+    NIST CSF 2.0 RS.AN-07 requires that incident data and metadata are
+    collected, and that their integrity and provenance are preserved.
+    Concord reads a cosigned attestation that records the collection
+    process, the integrity controls applied to collected data (for example
+    cryptographic hashing, write-once storage, or access logging), and the
+    retention period for that data.
+  rationale: |
+    Evidentiary value depends on being able to prove that collected data
+    has not been altered since acquisition. Attesting to a defined
+    collection process, explicit integrity controls, and a retention
+    period — reviewed at least annually — demonstrates the organization
+    preserves both the integrity and the provenance of incident data so it
+    remains admissible and useful for downstream analysis.
   evidence:
-    - id: nist_csf_2_rs_an_07
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-rs-an-07-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
-
+        kind: incident_data_integrity
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_rs_an_07
+    package: concord.nist_csf_2.rs_an_07
     file: ../policies/nist-csf-2-rs-an-07.rego
-
   remediation:
     runbook: docs/remediation/nist-csf-2-rs-an-07.md
     auto_fix: false
-    estimated_effort: 30m
-
-  status: draft
-  blocking: false
+    estimated_effort: 1w
+  mappings:
+    nist_csf: ["RS.AN-07"]
+    nist_800_53: ["IR-4", "AU-6", "IR-5"]
+    iso27001: ["A.5.28"]
+    soc2: ["CC7.3"]
+  status: stable
+  blocking: true

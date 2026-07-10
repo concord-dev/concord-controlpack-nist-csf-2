@@ -4,37 +4,63 @@ kind: Control
 metadata:
   id: NIST-CSF-2-GV.RR-01
   name: nist-csf-2-gv-rr-01
-  title: Organizational leadership is responsible for cybersecurity risk
+  title: Organizational leadership is responsible and accountable for cybersecurity risk
   framework: nist-csf-2
+  category: Govern
   severity: high
-  tags: []
+  tags:
+    - nist-csf
+    - govern
+    - accountability
   owners:
-    - team: concord-dev
+    - team: leadership
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-GV.RR-01 enforces.
+    NIST CSF 2.0 GV.RR-01 requires organizational leadership to be
+    responsible and accountable for cybersecurity risk and to foster a
+    culture that is risk-aware, ethical, and continually improving.
+    Concord reads a cosigned leadership-accountability attestation that
+    names the accountable executive, the board-level oversight body, the
+    cadence on which cyber risk is reported to that body, and the date
+    leadership last reviewed the organization's cybersecurity risk posture.
+
+  rationale: |
+    Auditors treat GV.RR-01 as the test of whether cyber risk has a named,
+    senior owner rather than being diffused across the organization. The
+    attestation forces a specific accountable executive and an active board
+    oversight cadence to be recorded, cosigned, and re-reviewed, so the
+    accountability cannot silently lapse.
 
   evidence:
-    - id: nist_csf_2_gv_rr_01
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-gv-rr-01-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: leadership_accountability
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_gv_rr_01
+    package: concord.nist_csf_2.gv_rr_01
     file: ../policies/nist-csf-2-gv-rr-01.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-gv-rr-01.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 1w
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "GV.RR-01"
+    nist_800_53:
+      - "PM-2"
+      - "PM-29"
+    iso27001:
+      - "A.5.2"
+      - "A.5.4"
+    soc2:
+      - "CC1.2"
+
+  status: stable
+  blocking: true

@@ -1,11 +1,10 @@
 {
-  "nist_csf_2_id_ra_03": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "threat_identification",
+  "signature_verified": true,
+  "attested_fields": {
+    "internal_threats": ["privileged insider misuse", "accidental data exposure", "shadow IT"],
+    "external_threats": ["ransomware operators", "credential-stuffing bots", "supply-chain compromise", "phishing campaigns"],
+    "recording_method": "threats recorded in the risk register with source, threat actor, and affected assets",
+    "last_reviewed_at": "2026-06-02T00:00:00Z"
   }
 }

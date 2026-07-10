@@ -1,11 +1,10 @@
 {
-  "nist_csf_2_gv_sc_06": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "procurement_planning",
+  "signature_verified": true,
+  "attested_fields": {
+    "due_diligence_process": "Security questionnaire and evidence review completed before any new supplier is engaged",
+    "risk_assessment_pre_procurement": "Documented risk assessment required for suppliers with production or data access",
+    "approval_gate": "Vendor Risk Committee sign-off required before contract execution",
+    "last_reviewed_at": "2026-06-01T00:00:00Z"
   }
 }

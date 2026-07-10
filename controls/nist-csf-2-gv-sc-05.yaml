@@ -4,37 +4,65 @@ kind: Control
 metadata:
   id: NIST-CSF-2-GV.SC-05
   name: nist-csf-2-gv-sc-05
-  title: Requirements to address cybersecurity risks in supply chain are established
+  title: Requirements to address cybersecurity risks in supply chains are established
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Govern
+  severity: high
+  tags:
+    - nist-csf
+    - govern
+    - supply-chain
   owners:
-    - team: concord-dev
+    - team: vendor-management
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-GV.SC-05 enforces.
+    NIST CSF 2.0 GV.SC-05 requires requirements to address cybersecurity
+    risks in supply chains to be established, prioritized, and integrated
+    into contracts and other agreements with suppliers and third parties.
+    Concord reads a cosigned supply-chain-requirements attestation that
+    records the contractual requirements imposed on suppliers, the
+    security clauses embedded in agreements, the method used to verify
+    those clauses, and the date the requirements were last reviewed.
+
+  rationale: |
+    Security expectations that never make it into a contract are
+    unenforceable. GV.SC-05 confirms that requirements such as breach
+    notification, right-to-audit, and data-protection clauses are written
+    into supplier agreements and verified. The attestation records the
+    requirements, clauses, and verification method so auditors can trace
+    the paper trail from policy to signed contract.
 
   evidence:
-    - id: nist_csf_2_gv_sc_05
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-gv-sc-05-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: supply_chain_requirements
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_gv_sc_05
+    package: concord.nist_csf_2.gv_sc_05
     file: ../policies/nist-csf-2-gv-sc-05.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-gv-sc-05.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 3d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "GV.SC-05"
+    nist_800_53:
+      - "SR-3"
+      - "SR-5"
+      - "SA-4"
+    iso27001:
+      - "A.5.20"
+      - "A.5.23"
+    soc2:
+      - "CC9.2"
+
+  status: stable
+  blocking: true

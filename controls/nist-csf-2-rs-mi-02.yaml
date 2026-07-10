@@ -1,40 +1,48 @@
 apiVersion: concord.dev/v1
 kind: Control
-
 metadata:
   id: NIST-CSF-2-RS.MI-02
-  name: nist-csf-2-rs-mi-02
+  name: incidents-eradicated
   title: Incidents are eradicated
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Respond
+  severity: high
+  tags: [nist-csf, respond, incidents, eradication]
   owners:
-    - team: concord-dev
-
+    - team: security
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-RS.MI-02 enforces.
-
+    NIST CSF 2.0 RS.MI-02 requires that incidents be eradicated - the
+    adversary's access, malware, and other artifacts removed - before
+    recovery begins. Concord reads a cosigned incident-eradication
+    attestation that records the eradication procedures, the method used
+    to verify the threat is gone, the root-cause analysis process, and
+    when the procedures were last reviewed.
+  rationale: |
+    Recovery on top of an un-eradicated threat simply hands the adversary
+    a fresh environment. Documented eradication and verification, backed by
+    root-cause analysis, ensure the threat is actually removed. The signed
+    attestation proves the eradication capability exists, is owned, and is
+    kept current.
   evidence:
-    - id: nist_csf_2_rs_mi_02
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-rs-mi-02-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
-
+        kind: incident_eradication
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_rs_mi_02
+    package: concord.nist_csf_2.rs_mi_02
     file: ../policies/nist-csf-2-rs-mi-02.rego
-
   remediation:
     runbook: docs/remediation/nist-csf-2-rs-mi-02.md
     auto_fix: false
     estimated_effort: 30m
-
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf: ["RS.MI-02"]
+    nist_800_53: ["IR-4"]
+    iso27001: ["A.5.26", "A.5.27"]
+    soc2: ["CC7.4", "CC7.5"]
+  status: stable
+  blocking: true

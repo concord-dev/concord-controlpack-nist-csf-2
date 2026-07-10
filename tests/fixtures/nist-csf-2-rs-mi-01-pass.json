@@ -1,11 +1,11 @@
 {
-  "nist_csf_2_rs_mi_01": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "incident_containment",
+  "signature_verified": true,
+  "attested_fields": {
+    "containment_playbooks": "per-scenario playbooks for malware, account compromise, and public cloud key leak",
+    "isolation_procedures": "EDR host isolation, IdP session/token revocation, security-group quarantine, and key rotation steps",
+    "decision_authority": "on-call IR lead may isolate any host or disable any account without prior approval during an active incident",
+    "last_reviewed_at": "2026-06-22",
+    "review_age_days": 18
   }
 }

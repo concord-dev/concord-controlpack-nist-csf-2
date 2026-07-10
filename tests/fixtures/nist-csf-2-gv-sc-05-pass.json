@@ -1,11 +1,16 @@
 {
-  "nist_csf_2_gv_sc_05": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "supply_chain_requirements",
+  "signature_verified": true,
+  "attested_fields": {
+    "contractual_requirements": [
+      "Right-to-audit clause for all tier-1 suppliers",
+      "Breach notification to Acme within 24 hours"
+    ],
+    "security_clauses": [
+      "Data encrypted in transit and at rest",
+      "Sub-processor disclosure and flow-down of security obligations"
+    ],
+    "verification_method": "Clauses confirmed during contract review and at annual supplier reassessment",
+    "last_reviewed_at": "2026-06-01T00:00:00Z"
   }
 }

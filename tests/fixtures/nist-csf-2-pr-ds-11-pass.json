@@ -1,8 +1,37 @@
 {
-  "nist_csf_2_pr_ds_11": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": true, "reason": "" }
-    ]
-  }
+  "fetched_at": "2026-06-18T08:30:00Z",
+  "buckets": [
+    {
+      "name": "prod-customer-records",
+      "tags": { "sensitive": "true" },
+      "policy": {
+        "Statement": [
+          {
+            "Sid": "DenyInsecureTransport",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": "s3:*",
+            "Resource": [
+              "arn:aws:s3:::prod-customer-records",
+              "arn:aws:s3:::prod-customer-records/*"
+            ],
+            "Condition": { "Bool": { "aws:SecureTransport": "false" } }
+          }
+        ]
+      }
+    }
+  ],
+  "load_balancers": [
+    {
+      "name": "prod-api-alb",
+      "tags": { "sensitive": "true" },
+      "listeners": [
+        {
+          "port": 443,
+          "protocol": "HTTPS",
+          "ssl_policy": "ELBSecurityPolicy-TLS13-1-2-2021-06"
+        }
+      ]
+    }
+  ]
 }

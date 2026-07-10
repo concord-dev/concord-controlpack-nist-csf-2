@@ -4,37 +4,52 @@ kind: Control
 metadata:
   id: NIST-CSF-2-PR.PS-06
   name: nist-csf-2-pr-ps-06
-  title: Secure software development practices are integrated
+  title: A secure software development life cycle is integrated
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Protect
+  severity: high
+  tags: [nist-csf, protect, secure-development, sdlc, appsec]
   owners:
-    - team: concord-dev
+    - team: engineering
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-PR.PS-06 enforces.
+    NIST CSF 2.0 PR.PS-06 requires that a secure software development life
+    cycle is integrated into software development practices. Concord reads a
+    signed attestation for the SDLC program and verifies that it enumerates
+    the security gates enforced in the pipeline (e.g. threat modeling, peer
+    review, security sign-off), the types of security testing performed (e.g.
+    SAST, DAST, dependency and secret scanning), confirms developers receive
+    secure-development training, and records a recent review date.
+  rationale: |
+    Most exploitable defects are introduced during development; bolting on
+    security afterwards is costly and incomplete. Gated design review, layered
+    automated testing, and trained developers are the practices auditors and
+    frameworks (NIST SSDF, SA-15) expect from a secure SDLC.
 
   evidence:
-    - id: nist_csf_2_pr_ps_06
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-pr-ps-06-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: secure_sdlc
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_pr_ps_06
+    package: concord.nist_csf_2.pr_ps_06
     file: ../policies/nist-csf-2-pr-ps-06.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-pr-ps-06.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 1d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf: ["PR.PS-06"]
+    nist_800_53: ["SA-3", "SA-15"]
+    iso27001: ["A.8.25"]
+    soc2: ["CC8.1"]
+
+  status: stable
+  blocking: true

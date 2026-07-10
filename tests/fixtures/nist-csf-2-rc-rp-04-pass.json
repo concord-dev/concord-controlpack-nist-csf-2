@@ -1,11 +1,11 @@
 {
-  "nist_csf_2_rc_rp_04": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "recovery_prioritization",
+  "signature_verified": true,
+  "attested_fields": {
+    "critical_functions": "order intake, payments, and customer authentication are designated tier-1 mission functions in the BIA",
+    "recovery_order": "identity provider first, then payments, then order intake, then internal tooling",
+    "dependency_mapping": "service dependency graph in the CMDB maps each tier-1 function to its upstream data stores and identity dependencies",
+    "last_reviewed_at": "2026-06-10",
+    "review_age_days": 30
   }
 }

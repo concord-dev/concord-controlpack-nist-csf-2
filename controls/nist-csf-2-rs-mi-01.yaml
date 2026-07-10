@@ -1,40 +1,48 @@
 apiVersion: concord.dev/v1
 kind: Control
-
 metadata:
   id: NIST-CSF-2-RS.MI-01
-  name: nist-csf-2-rs-mi-01
+  name: incidents-contained
   title: Incidents are contained
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Respond
+  severity: critical
+  tags: [nist-csf, respond, incidents, containment]
   owners:
-    - team: concord-dev
-
+    - team: security
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-RS.MI-01 enforces.
-
+    NIST CSF 2.0 RS.MI-01 requires that incidents be contained to limit
+    their spread and impact. Concord reads a cosigned incident-containment
+    attestation that records the containment playbooks in use, the
+    isolation procedures for endpoints/accounts/network segments, the
+    authority empowered to order containment, and when the playbooks were
+    last reviewed.
+  rationale: |
+    Fast, pre-authorized containment is what stops an intrusion from
+    becoming a breach. Documented playbooks and clear isolation authority
+    remove the hesitation that lets an incident spread. The signed
+    attestation proves the containment capability exists, is owned, and is
+    kept current.
   evidence:
-    - id: nist_csf_2_rs_mi_01
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-rs-mi-01-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
-
+        kind: incident_containment
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_rs_mi_01
+    package: concord.nist_csf_2.rs_mi_01
     file: ../policies/nist-csf-2-rs-mi-01.rego
-
   remediation:
     runbook: docs/remediation/nist-csf-2-rs-mi-01.md
     auto_fix: false
     estimated_effort: 30m
-
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf: ["RS.MI-01"]
+    nist_800_53: ["IR-4"]
+    iso27001: ["A.5.26"]
+    soc2: ["CC7.4"]
+  status: stable
+  blocking: true

@@ -1,11 +1,12 @@
 {
-  "nist_csf_2_rc_rp_03": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2023-01-01T00:00:00Z",
-    "expires_at": "2024-06-01T00:00:00Z",
-    "attested_fields": ["scope"]
-  }
+  "fetched_at": "2026-06-25T10:00:00Z",
+  "recovery_points": [
+    {
+      "id": "rp-prod-postgres-2026-06-24",
+      "resource": "prod-postgres",
+      "integrity_verified": false,
+      "last_integrity_check_status": "failed",
+      "integrity_check_age_days": 210
+    }
+  ]
 }

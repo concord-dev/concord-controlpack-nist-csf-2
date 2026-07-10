@@ -1,38 +1,49 @@
 apiVersion: concord.dev/v1
 kind: Control
-
 metadata:
   id: NIST-CSF-2-RS.AN-03
-  name: nist-csf-2-rs-an-03
+  name: incident-analysis-performed
   title: Analysis is performed to establish what has taken place during an incident
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Respond
+  severity: high
+  tags: [nist-csf, respond, incident-analysis]
   owners:
-    - team: concord-dev
-
+    - team: security
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-RS.AN-03 enforces.
-
+    NIST CSF 2.0 RS.AN-03 requires that analysis is performed to establish
+    what has taken place during an incident and the root cause of that
+    incident. Concord reads a cosigned attestation that records the
+    organization's incident-analysis capability: the analysis methodology
+    applied, the forensic capability available, and the documentation
+    standard used to capture findings.
+  rationale: |
+    Without a repeatable analysis capability, responders cannot reliably
+    determine scope, root cause, or the actions needed to contain and
+    eradicate an incident. Attesting to a documented methodology, forensic
+    readiness, and a documentation standard — reviewed at least annually —
+    demonstrates the organization can establish what happened rather than
+    guessing. The attestation is cosigned so the evidence is tamper-evident.
   evidence:
-    - id: nist_csf_2_rs_an_03
-      source: aws
-      type: aws_resource_inventory
+    - id: attestation
+      source: attestation
+      type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-rs-an-03-pass.json
       params:
-              service: TODO  # e.g. s3, iam, kms
-              region: us-east-1
-
+        kind: incident_analysis
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_rs_an_03
+    package: concord.nist_csf_2.rs_an_03
     file: ../policies/nist-csf-2-rs-an-03.rego
-
   remediation:
     runbook: docs/remediation/nist-csf-2-rs-an-03.md
     auto_fix: false
-    estimated_effort: 30m
-
-  status: draft
-  blocking: false
+    estimated_effort: 1w
+  mappings:
+    nist_csf: ["RS.AN-03"]
+    nist_800_53: ["IR-4", "AU-6", "IR-5"]
+    iso27001: ["A.5.25", "A.5.26"]
+    soc2: ["CC7.3"]
+  status: stable
+  blocking: true

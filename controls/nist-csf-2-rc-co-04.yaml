@@ -1,40 +1,49 @@
 apiVersion: concord.dev/v1
 kind: Control
-
 metadata:
   id: NIST-CSF-2-RC.CO-04
-  name: nist-csf-2-rc-co-04
-  title: Public updates on incident recovery are shared
+  name: public-recovery-updates-shared
+  title: Public updates on incident recovery are shared using approved methods and messaging
   framework: nist-csf-2
+  category: Recover
   severity: low
-  tags: []
+  tags: [nist-csf, recover, communications]
   owners:
-    - team: concord-dev
-
+    - team: security
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-RC.CO-04 enforces.
-
+    NIST CSF 2.0 RC.CO-04 requires that public updates on incident recovery be
+    shared using approved methods and messaging. Concord reads a cosigned
+    public-recovery-updates attestation that records the documented process for
+    issuing public statements, the authority that must approve external
+    messaging, the sanctioned communication channels, and when the process was
+    last reviewed.
+  rationale: |
+    Public statements made during a recovery are legally and reputationally
+    consequential, so they cannot be posted by whoever happens to hold the
+    keyboard. Requiring a defined approval authority and approved channels
+    prevents premature, inconsistent, or unvetted disclosures. The signed
+    attestation proves the public-communication process exists, is owned, and is
+    kept current.
   evidence:
-    - id: nist_csf_2_rc_co_04
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-rc-co-04-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
-
+        kind: public_recovery_updates
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_rc_co_04
+    package: concord.nist_csf_2.rc_co_04
     file: ../policies/nist-csf-2-rc-co-04.rego
-
   remediation:
     runbook: docs/remediation/nist-csf-2-rc-co-04.md
     auto_fix: false
     estimated_effort: 30m
-
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf: ["RC.CO-04"]
+    nist_800_53: ["IR-4", "CP-2"]
+    iso27001: ["A.5.24"]
+    soc2: ["CC2.3"]
+  status: stable
+  blocking: true

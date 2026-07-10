@@ -6,35 +6,69 @@ metadata:
   name: nist-csf-2-pr-ps-01
   title: Configuration management practices are established
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Protect
+  severity: high
+  tags:
+    - nist-csf
+    - protect
+    - platform-security
+    - configuration-management
+    - aws-config
   owners:
-    - team: concord-dev
+    - team: platform
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-PR.PS-01 enforces.
+    NIST CSF 2.0 subcategory PR.PS-01 (Platform Security) requires that
+    configuration management practices be established and applied so that the
+    current configuration of every system component is authoritatively
+    maintained. The AWS-side technical minimum is that the AWS Config recorder
+    is enabled and recording in every active region, so the configuration of
+    all resources is continuously and tamper-evidently captured. Concord reads
+    the Config recorder status and denies any active region where the recorder
+    is absent or not recording, and denies when no active regions are reported
+    at all. This implements NIST 800-53 CM-2 (Baseline Configuration) as the
+    control behind PR.PS-01. An absent evidence payload denies (fail-closed).
+
+  rationale: |
+    Configuration management provides no assurance unless the current state of
+    every resource is continuously captured and comparable to an approved
+    baseline. The AWS Config recorder produces exactly that authoritative,
+    time-stamped record; if it is disabled in a region, configuration drift and
+    unauthorized changes there are invisible and no baseline can be maintained
+    for those resources. Requiring recording in every active region prevents the
+    false assurance of coverage that only spans part of the estate, and the
+    fail-closed default denies on missing evidence or a non-recording region
+    rather than assuming that region is adequately covered.
 
   evidence:
-    - id: nist_csf_2_pr_ps_01
-      source: attestation
-      type: policy_attestation
+    - id: config_recorders
+      source: aws
+      type: config_recorder_status
       fixture: ../tests/fixtures/nist-csf-2-pr-ps-01-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        region: ${env.AWS_REGION}
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_pr_ps_01
+    package: concord.nist_csf_2.pr_ps_01
     file: ../policies/nist-csf-2-pr-ps-01.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-pr-ps-01.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2h
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "PR.PS-01"
+    nist_800_53:
+      - "CM-2"
+      - "CM-8"
+    soc2:
+      - "CC7.1"
+    pci_dss:
+      - "2.2.1"
+
+  status: stable
+  blocking: true

@@ -1,11 +1,14 @@
 {
-  "nist_csf_2_gv_rm_02": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "risk_appetite",
+  "signature_verified": true,
+  "attested_fields": {
+    "risk_appetite_statement": "The organization has a low appetite for risks that could compromise customer data confidentiality and a moderate appetite for availability risk on non-critical internal systems.",
+    "risk_tolerance_levels": [
+      "No single risk may exceed an annualized loss expectancy of 0.5% of ARR",
+      "Critical vulnerabilities must be remediated within 15 days",
+      "Zero tolerance for unencrypted customer PII at rest"
+    ],
+    "approving_authority": "CEO and Board Risk Committee",
+    "last_reviewed_at": "2026-06-18T00:00:00Z"
   }
 }

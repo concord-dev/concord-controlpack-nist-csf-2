@@ -1,11 +1,8 @@
 {
-  "nist_csf_2_gv_po_02": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2023-01-01T00:00:00Z",
-    "expires_at": "2024-06-01T00:00:00Z",
-    "attested_fields": ["scope"]
+  "kind": "cyber_policy_management",
+  "signature_verified": false,
+  "attested_fields": {
+    "review_cycle": "Annual",
+    "last_reviewed_at": "2026-06-12T00:00:00Z"
   }
 }

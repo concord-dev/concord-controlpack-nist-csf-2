@@ -1,8 +1,8 @@
 {
-  "nist_csf_2_id_am_03": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": true, "reason": "" }
-    ]
-  }
+  "fetched_at": "2026-06-15T10:00:00Z",
+  "config_recorder_active": true,
+  "instances": [
+    {"id": "i-0a1b2c3d", "tags": {"owner": "platform-team", "environment": "prod", "data_classification": "confidential"}},
+    {"id": "i-4e5f6a7b", "tags": {"owner": "data-team", "environment": "staging", "data_classification": "internal"}}
+  ]
 }

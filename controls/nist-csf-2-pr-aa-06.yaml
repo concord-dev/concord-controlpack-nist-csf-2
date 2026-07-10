@@ -4,35 +4,52 @@ kind: Control
 metadata:
   id: NIST-CSF-2-PR.AA-06
   name: nist-csf-2-pr-aa-06
-  title: Physical access to assets is managed
+  title: Physical access to assets is managed, monitored, and enforced
   framework: nist-csf-2
+  category: Protect
   severity: medium
-  tags: []
+  tags: [nist-csf, protect, physical-security, access-control]
   owners:
-    - team: concord-dev
+    - team: security-operations
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-PR.AA-06 enforces.
+    NIST CSF 2.0 PR.AA-06 requires that physical access to assets is managed,
+    monitored, and enforced commensurate with risk. Concord reads a signed
+    attestation for the facilities that hold in-scope assets (offices, data
+    centers, or a colocation/cloud provider's audited facilities) and verifies
+    that it documents the physical access-control measures in place, the roles
+    authorized to enter, that entry is logged, and a recent review date.
+  rationale: |
+    Logical controls can be bypassed by anyone with physical access to
+    hardware, media, or network ports. Managed entry (badging, escorts,
+    mantraps), a bounded set of authorized roles, and access logging are the
+    baseline physical safeguards; for cloud-hosted assets this is typically
+    satisfied by the provider's attested facility controls.
 
   evidence:
-    - id: nist_csf_2_pr_aa_06
-      source: aws
-      type: aws_resource_inventory
+    - id: attestation
+      source: attestation
+      type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-pr-aa-06-pass.json
       params:
-              service: TODO  # e.g. s3, iam, kms
-              region: us-east-1
+        kind: physical_access
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_pr_aa_06
+    package: concord.nist_csf_2.pr_aa_06
     file: ../policies/nist-csf-2-pr-aa-06.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-pr-aa-06.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 1d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf: ["PR.AA-06"]
+    nist_800_53: ["AC-3", "PE-3"]
+    iso27001: ["A.7.2"]
+    soc2: ["CC6.4"]
+
+  status: stable
+  blocking: true

@@ -1,8 +1,10 @@
 {
-  "nist_csf_2_de_ae_06": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": true, "reason": "" }
-    ]
+  "kind": "event_notification",
+  "signature_verified": true,
+  "attested_fields": {
+    "notification_process": "Confirmed events auto-open a ticket and page the on-call responder; sev-high also notifies the CISO within 15 minutes",
+    "authorized_recipients": ["soc@acme.com", "oncall-security", "ciso@acme.com"],
+    "channels": ["pagerduty", "slack #sec-alerts", "email"],
+    "last_reviewed_at": "2026-06-12T00:00:00Z"
   }
 }

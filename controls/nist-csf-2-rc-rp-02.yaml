@@ -1,40 +1,49 @@
 apiVersion: concord.dev/v1
 kind: Control
-
 metadata:
   id: NIST-CSF-2-RC.RP-02
-  name: nist-csf-2-rc-rp-02
+  name: recovery-actions-performed
   title: Recovery actions are selected, scoped, prioritized, and performed
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Recover
+  severity: high
+  tags: [nist-csf, recover, recovery-plan]
   owners:
-    - team: concord-dev
-
+    - team: platform
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-RC.RP-02 enforces.
-
+    NIST CSF 2.0 RC.RP-02 requires that recovery actions be selected, scoped,
+    prioritized, and performed during an incident. Concord reads a cosigned
+    recovery-execution attestation that records the recovery playbooks that
+    define the available actions, the method used to prioritize which actions
+    run first, how executed recovery actions are tracked to completion, and when
+    the process was last reviewed.
+  rationale: |
+    Recovery that is improvised burns the golden hour after an incident on
+    deciding what to do instead of doing it. Pre-selected, scoped, and
+    prioritized playbooks with execution tracking turn recovery into a
+    repeatable procedure and give responders an auditable record of what was
+    done. The signed attestation proves those playbooks and tracking exist, are
+    owned, and are kept current.
   evidence:
-    - id: nist_csf_2_rc_rp_02
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-rc-rp-02-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
-
+        kind: recovery_execution
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_rc_rp_02
+    package: concord.nist_csf_2.rc_rp_02
     file: ../policies/nist-csf-2-rc-rp-02.rego
-
   remediation:
     runbook: docs/remediation/nist-csf-2-rc-rp-02.md
     auto_fix: false
     estimated_effort: 30m
-
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf: ["RC.RP-02"]
+    nist_800_53: ["CP-10", "CP-4", "IR-4"]
+    iso27001: ["A.5.29", "A.5.30"]
+    soc2: ["A1.2", "A1.3", "CC7.5"]
+  status: stable
+  blocking: true

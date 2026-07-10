@@ -1,40 +1,47 @@
 apiVersion: concord.dev/v1
 kind: Control
-
 metadata:
   id: NIST-CSF-2-RS.MA-04
-  name: nist-csf-2-rs-ma-04
+  name: incidents-escalated-as-needed
   title: Incidents are escalated or elevated as needed
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Respond
+  severity: high
+  tags: [nist-csf, respond, incidents, escalation]
   owners:
-    - team: concord-dev
-
+    - team: security
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-RS.MA-04 enforces.
-
+    NIST CSF 2.0 RS.MA-04 requires that incidents be escalated or elevated
+    when their severity, scope, or duration crosses defined thresholds.
+    Concord reads a cosigned incident-escalation attestation that records
+    the escalation criteria/thresholds, the escalation paths and contacts,
+    the authority empowered to make escalation decisions, and when the
+    escalation process was last reviewed.
+  rationale: |
+    Clear escalation criteria and paths keep a contained incident from
+    quietly becoming a crisis because no one had the authority or contact
+    list to raise it. The signed attestation proves the escalation process
+    exists, is owned, and is kept current.
   evidence:
-    - id: nist_csf_2_rs_ma_04
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-rs-ma-04-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
-
+        kind: incident_escalation
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_rs_ma_04
+    package: concord.nist_csf_2.rs_ma_04
     file: ../policies/nist-csf-2-rs-ma-04.rego
-
   remediation:
     runbook: docs/remediation/nist-csf-2-rs-ma-04.md
     auto_fix: false
     estimated_effort: 30m
-
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf: ["RS.MA-04"]
+    nist_800_53: ["IR-4", "IR-5", "IR-8"]
+    iso27001: ["A.5.24", "A.5.26"]
+    soc2: ["CC7.4"]
+  status: stable
+  blocking: true

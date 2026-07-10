@@ -1,11 +1,16 @@
 {
-  "nist_csf_2_gv_sc_02": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "supplier_roles",
+  "signature_verified": true,
+  "attested_fields": {
+    "supplier_responsibilities": [
+      "Notify Acme of any security incident within 24 hours",
+      "Maintain a SOC 2 Type II attestation for the life of the contract"
+    ],
+    "internal_owners": [
+      {"vendor_tier": "tier_1", "owner": "vendor-mgmt@acme.com"},
+      {"vendor_tier": "tier_2", "owner": "procurement@acme.com"}
+    ],
+    "escalation": "Unmet supplier obligations escalate to the CISO and Vendor Risk Committee",
+    "last_reviewed_at": "2026-06-01T00:00:00Z"
   }
 }

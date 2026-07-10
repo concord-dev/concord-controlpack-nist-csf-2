@@ -3,38 +3,63 @@ kind: Control
 
 metadata:
   id: NIST-CSF-2-GV.OC-04
-  name: nist-csf-2-gv-oc-04
+  name: critical-objectives-services-understood
   title: Critical objectives, capabilities, and services are understood and communicated
   framework: nist-csf-2
-  severity: low
-  tags: []
+  category: Govern
+  severity: high
+  tags:
+    - nist-csf
+    - govern
+    - business-criticality
   owners:
-    - team: concord-dev
+    - team: leadership
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-GV.OC-04 enforces.
+    NIST CSF 2.0 GV.OC-04 requires that critical objectives,
+    capabilities, and services that external stakeholders depend on or
+    expect from the organization are understood and communicated.
+    Concord reads a cosigned critical-services attestation that
+    enumerates the critical services, their upstream dependencies, and
+    how criticality is communicated to those who must act on it.
+
+  rationale: |
+    Recovery objectives, monitoring priorities, and supply-chain tiers
+    all derive from knowing which services are business-critical. If the
+    organization cannot name its critical services and their
+    dependencies, downstream Protect, Detect, and Recover controls are
+    prioritized blindly.
 
   evidence:
-    - id: nist_csf_2_gv_oc_04
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-gv-oc-04-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: critical_services
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_gv_oc_04
+    package: concord.nist_csf_2.gv_oc_04
     file: ../policies/nist-csf-2-gv-oc-04.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-gv-oc-04.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 3d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "GV.OC-04"
+    nist_800_53:
+      - "PM-11"
+      - "RA-9"
+      - "CP-2"
+    iso27001:
+      - "A.5.30"
+    soc2:
+      - "A1.2"
+
+  status: stable
+  blocking: true

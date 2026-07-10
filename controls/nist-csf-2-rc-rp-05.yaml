@@ -1,40 +1,49 @@
 apiVersion: concord.dev/v1
 kind: Control
-
 metadata:
   id: NIST-CSF-2-RC.RP-05
-  name: nist-csf-2-rc-rp-05
-  title: Integrity of restored assets is verified prior to returning to operations
+  name: restored-asset-integrity-verified
+  title: Integrity of restored assets is verified before returning them to operations
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Recover
+  severity: high
+  tags: [nist-csf, recover, integrity]
   owners:
-    - team: concord-dev
-
+    - team: platform
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-RC.RP-05 enforces.
-
+    NIST CSF 2.0 RC.RP-05 requires that the integrity of restored assets be
+    verified before they are returned to normal operations, and that operational
+    status be confirmed. Concord reads a cosigned restoration-verification
+    attestation that records the procedure used to verify a restored asset, the
+    acceptance criteria it must meet, the role authorized to sign off on the
+    return to operations, and when the procedure was last reviewed.
+  rationale: |
+    Returning a restored asset to production without verifying it risks
+    reintroducing the very malware, misconfiguration, or corruption that caused
+    the incident, turning one outage into a reinfection loop. A defined
+    verification procedure with explicit acceptance criteria and a named sign-off
+    role forces a deliberate go/no-go decision. The signed attestation proves
+    that gate exists, is owned, and is kept current.
   evidence:
-    - id: nist_csf_2_rc_rp_05
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-rc-rp-05-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
-
+        kind: restoration_verification
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_rc_rp_05
+    package: concord.nist_csf_2.rc_rp_05
     file: ../policies/nist-csf-2-rc-rp-05.rego
-
   remediation:
     runbook: docs/remediation/nist-csf-2-rc-rp-05.md
     auto_fix: false
     estimated_effort: 30m
-
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf: ["RC.RP-05"]
+    nist_800_53: ["CP-10", "CP-4", "SI-7"]
+    iso27001: ["A.5.30", "A.8.13"]
+    soc2: ["A1.3", "CC7.5"]
+  status: stable
+  blocking: true

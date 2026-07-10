@@ -1,8 +1,10 @@
 {
-  "nist_csf_2_de_ae_02": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": true, "reason": "" }
-    ]
+  "kind": "event_analysis_process",
+  "signature_verified": true,
+  "attested_fields": {
+    "analysis_procedures": "Documented SOC triage runbook: enrich, correlate across CloudTrail/GuardDuty/EDR, classify severity, and hand off",
+    "tooling": ["Splunk ES", "GuardDuty", "CrowdStrike Falcon"],
+    "analyst_roles": ["tier-1 soc analyst", "tier-2 incident analyst", "soc lead"],
+    "last_reviewed_at": "2026-06-05T00:00:00Z"
   }
 }

@@ -1,20 +1,50 @@
-package concord.nist_csf_2.nist_csf_2_gv_oc_03
+package concord.nist_csf_2.gv_oc_03
 
 import rego.v1
-import data.concord.lib.attestation
-import data.concord.lib.evidence
+
+# NIST CSF 2.0 GV.OC-03 — legal, regulatory, and contractual
+# requirements regarding cybersecurity, including privacy and civil
+# liberties obligations, are understood and managed.
+
+required_fields := {"applicable_regulations", "contractual_obligations",
+                    "tracking_process", "last_reviewed_at"}
+
+max_review_age_days := 365
 
 deny contains msg if {
-	not evidence.present(input, "nist_csf_2_gv_oc_03")
-	msg := "NIST-CSF-2-GV.OC-03: no signed attestation submitted"
+    not input.attestation
+    msg := "no legal-regulatory-requirements attestation collected"
 }
 
 deny contains msg if {
-	not attestation.not_expired(input.nist_csf_2_gv_oc_03)
-	msg := sprintf("NIST-CSF-2-GV.OC-03: attestation expired (expires_at=%s)", [input.nist_csf_2_gv_oc_03.expires_at])
+    input.attestation.kind != "legal_regulatory_requirements"
+    msg := sprintf("attestation kind is %q, expected \"legal_regulatory_requirements\"", [input.attestation.kind])
 }
 
 deny contains msg if {
-	not attestation.fresh(input.nist_csf_2_gv_oc_03, 365)
-	msg := sprintf("NIST-CSF-2-GV.OC-03: attestation not reviewed in 365 days (last_review_at=%s)", [input.nist_csf_2_gv_oc_03.last_review_at])
+    some f in required_fields
+    not input.attestation.attested_fields[f]
+    msg := sprintf("legal-regulatory attestation missing field: %s", [f])
+}
+
+deny contains msg if {
+    count(input.attestation.attested_fields.applicable_regulations) == 0
+    msg := "no applicable regulations enumerated"
+}
+
+deny contains msg if {
+    count(input.attestation.attested_fields.contractual_obligations) == 0
+    msg := "no contractual obligations enumerated"
+}
+
+deny contains msg if {
+    not input.attestation.signature_verified
+    msg := "legal-regulatory attestation cosign signature did not verify"
+}
+
+deny contains msg if {
+    reviewed := time.parse_rfc3339_ns(input.attestation.attested_fields.last_reviewed_at)
+    age_ns := time.now_ns() - reviewed
+    age_ns > max_review_age_days * 24 * 60 * 60 * 1000000000
+    msg := sprintf("legal/regulatory register not reviewed within %d days", [max_review_age_days])
 }

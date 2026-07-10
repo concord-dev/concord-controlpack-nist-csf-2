@@ -1,40 +1,49 @@
 apiVersion: concord.dev/v1
 kind: Control
-
 metadata:
   id: NIST-CSF-2-RC.RP-04
-  name: nist-csf-2-rc-rp-04
+  name: mission-functions-considered
   title: Critical mission functions and cybersecurity risk management are considered during recovery
   framework: nist-csf-2
+  category: Recover
   severity: medium
-  tags: []
+  tags: [nist-csf, recover, business-continuity]
   owners:
-    - team: concord-dev
-
+    - team: platform
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-RC.RP-04 enforces.
-
+    NIST CSF 2.0 RC.RP-04 requires that critical mission functions and
+    cybersecurity risk management be considered when establishing post-incident
+    operational norms. Concord reads a cosigned recovery-prioritization
+    attestation that records the critical business functions, the order in which
+    services are recovered, the dependency mapping that informs that order, and
+    when the analysis was last reviewed.
+  rationale: |
+    Not everything can be recovered first, and recovering systems in the wrong
+    order can prolong the outage of the functions that matter most or bring back
+    still-compromised assets. Explicitly ranking critical functions and mapping
+    their dependencies ensures recovery effort is spent where it protects the
+    mission. The signed attestation proves this prioritization exists, is owned,
+    and is kept current.
   evidence:
-    - id: nist_csf_2_rc_rp_04
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-rc-rp-04-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
-
+        kind: recovery_prioritization
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_rc_rp_04
+    package: concord.nist_csf_2.rc_rp_04
     file: ../policies/nist-csf-2-rc-rp-04.rego
-
   remediation:
     runbook: docs/remediation/nist-csf-2-rc-rp-04.md
     auto_fix: false
     estimated_effort: 30m
-
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf: ["RC.RP-04"]
+    nist_800_53: ["CP-10", "CP-2", "CP-4"]
+    iso27001: ["A.5.29", "A.5.30"]
+    soc2: ["A1.2", "CC9.1"]
+  status: stable
+  blocking: true

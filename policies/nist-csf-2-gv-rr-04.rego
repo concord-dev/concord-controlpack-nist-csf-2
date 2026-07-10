@@ -1,20 +1,42 @@
-package concord.nist_csf_2.nist_csf_2_gv_rr_04
+package concord.nist_csf_2.gv_rr_04
 
 import rego.v1
-import data.concord.lib.attestation
-import data.concord.lib.evidence
 
-deny contains msg if {
-	not evidence.present(input, "nist_csf_2_gv_rr_04")
-	msg := "NIST-CSF-2-GV.RR-04: no signed attestation submitted"
+# NIST CSF 2.0 GV.RR-04 — cybersecurity is included in human resources
+# practices across the personnel lifecycle.
+
+expected_kind := "hr_security_integration"
+
+required_fields := {
+    "screening_process",
+    "onboarding_security",
+    "offboarding_process",
+    "last_reviewed_at",
 }
 
 deny contains msg if {
-	not attestation.not_expired(input.nist_csf_2_gv_rr_04)
-	msg := sprintf("NIST-CSF-2-GV.RR-04: attestation expired (expires_at=%s)", [input.nist_csf_2_gv_rr_04.expires_at])
+    not input.attestation
+    msg := "no HR-security-integration attestation collected"
 }
 
 deny contains msg if {
-	not attestation.fresh(input.nist_csf_2_gv_rr_04, 365)
-	msg := sprintf("NIST-CSF-2-GV.RR-04: attestation not reviewed in 365 days (last_review_at=%s)", [input.nist_csf_2_gv_rr_04.last_review_at])
+    input.attestation.kind != expected_kind
+    msg := sprintf("attestation kind is %q, expected %q", [input.attestation.kind, expected_kind])
+}
+
+deny contains msg if {
+    some f in required_fields
+    not input.attestation.attested_fields[f]
+    msg := sprintf("HR-security-integration attestation missing required field: %s", [f])
+}
+
+deny contains msg if {
+    not input.attestation.signature_verified
+    msg := "HR-security-integration attestation cosign signature did not verify"
+}
+
+deny contains msg if {
+    reviewed := time.parse_rfc3339_ns(input.attestation.attested_fields.last_reviewed_at)
+    time.now_ns() - reviewed > ((365 * 24) * 60 * 60) * 1000000000
+    msg := "HR security integration has not been reviewed in the last 365 days"
 }

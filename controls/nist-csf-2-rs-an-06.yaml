@@ -1,40 +1,48 @@
 apiVersion: concord.dev/v1
 kind: Control
-
 metadata:
   id: NIST-CSF-2-RS.AN-06
-  name: nist-csf-2-rs-an-06
-  title: Actions performed during investigation are recorded
+  name: investigation-actions-recorded
+  title: Actions performed during an investigation are recorded
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Respond
+  severity: high
+  tags: [nist-csf, respond, forensics]
   owners:
-    - team: concord-dev
-
+    - team: security
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-RS.AN-06 enforces.
-
+    NIST CSF 2.0 RS.AN-06 requires that the actions performed during an
+    investigation are recorded, and that the integrity and provenance of
+    those records are preserved. Concord reads a cosigned attestation that
+    records how investigation actions are logged, how chain of custody is
+    maintained, and the tooling that enforces both.
+  rationale: |
+    Investigation records are frequently relied on for legal, regulatory,
+    and insurance purposes, so their integrity and provenance must be
+    defensible. Attesting to action logging, a chain-of-custody process,
+    and the enforcing tooling — reviewed at least annually — demonstrates
+    that responder actions are captured contemporaneously and cannot be
+    repudiated or tampered with after the fact.
   evidence:
-    - id: nist_csf_2_rs_an_06
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-rs-an-06-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
-
+        kind: investigation_recordkeeping
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_rs_an_06
+    package: concord.nist_csf_2.rs_an_06
     file: ../policies/nist-csf-2-rs-an-06.rego
-
   remediation:
     runbook: docs/remediation/nist-csf-2-rs-an-06.md
     auto_fix: false
-    estimated_effort: 30m
-
-  status: draft
-  blocking: false
+    estimated_effort: 1w
+  mappings:
+    nist_csf: ["RS.AN-06"]
+    nist_800_53: ["IR-4", "AU-6", "IR-5"]
+    iso27001: ["A.5.28"]
+    soc2: ["CC7.3"]
+  status: stable
+  blocking: true

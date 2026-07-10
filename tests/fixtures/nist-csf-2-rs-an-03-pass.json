@@ -1,8 +1,14 @@
 {
-  "nist_csf_2_rs_an_03": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": true, "reason": "" }
-    ]
+  "kind": "incident_analysis",
+  "signature_verified": true,
+  "attested_fields": {
+    "analysis_methodology": [
+      "root-cause analysis",
+      "timeline reconstruction",
+      "indicator-of-compromise correlation"
+    ],
+    "forensic_capability": "in-house DFIR team with retained external forensics partner",
+    "documentation_standard": "NIST SP 800-61r2 incident-analysis report template",
+    "last_reviewed_at": "2026-06-12T00:00:00Z"
   }
 }

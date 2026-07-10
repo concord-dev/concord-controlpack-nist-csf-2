@@ -1,20 +1,50 @@
-package concord.nist_csf_2.nist_csf_2_gv_oc_02
+package concord.nist_csf_2.gv_oc_02
 
 import rego.v1
-import data.concord.lib.attestation
-import data.concord.lib.evidence
+
+# NIST CSF 2.0 GV.OC-02 — internal and external stakeholders are
+# understood, and their needs and expectations regarding cybersecurity
+# risk management are understood and prioritized.
+
+required_fields := {"internal_stakeholders", "external_stakeholders",
+                    "prioritization_basis", "last_reviewed_at"}
+
+max_review_age_days := 365
 
 deny contains msg if {
-	not evidence.present(input, "nist_csf_2_gv_oc_02")
-	msg := "NIST-CSF-2-GV.OC-02: no signed attestation submitted"
+    not input.attestation
+    msg := "no organizational-context attestation collected"
 }
 
 deny contains msg if {
-	not attestation.not_expired(input.nist_csf_2_gv_oc_02)
-	msg := sprintf("NIST-CSF-2-GV.OC-02: attestation expired (expires_at=%s)", [input.nist_csf_2_gv_oc_02.expires_at])
+    input.attestation.kind != "organizational_context"
+    msg := sprintf("attestation kind is %q, expected \"organizational_context\"", [input.attestation.kind])
 }
 
 deny contains msg if {
-	not attestation.fresh(input.nist_csf_2_gv_oc_02, 365)
-	msg := sprintf("NIST-CSF-2-GV.OC-02: attestation not reviewed in 365 days (last_review_at=%s)", [input.nist_csf_2_gv_oc_02.last_review_at])
+    some f in required_fields
+    not input.attestation.attested_fields[f]
+    msg := sprintf("organizational-context attestation missing field: %s", [f])
+}
+
+deny contains msg if {
+    count(input.attestation.attested_fields.internal_stakeholders) == 0
+    msg := "no internal stakeholders identified"
+}
+
+deny contains msg if {
+    count(input.attestation.attested_fields.external_stakeholders) == 0
+    msg := "no external stakeholders identified"
+}
+
+deny contains msg if {
+    not input.attestation.signature_verified
+    msg := "organizational-context attestation cosign signature did not verify"
+}
+
+deny contains msg if {
+    reviewed := time.parse_rfc3339_ns(input.attestation.attested_fields.last_reviewed_at)
+    age_ns := time.now_ns() - reviewed
+    age_ns > max_review_age_days * 24 * 60 * 60 * 1000000000
+    msg := sprintf("stakeholder context not reviewed within %d days", [max_review_age_days])
 }

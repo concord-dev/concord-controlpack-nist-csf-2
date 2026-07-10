@@ -6,33 +6,58 @@ metadata:
   name: nist-csf-2-id-am-03
   title: Organizational hardware is inventoried and maintained
   framework: nist-csf-2
+  category: Identify
   severity: high
-  tags: []
+  tags:
+    - nist-csf-2
+    - identify
+    - inventory
+    - asset-management
   owners:
-    - team: concord-dev
+    - team: platform
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-ID.AM-03 enforces.
+    NIST CSF 2.0 ID.AM-03 requires the organization to maintain an
+    inventory of the hardware it manages. For a cloud-first estate the
+    "hardware" is the compute the organization runs (for example EC2/EKS
+    workloads), so Concord verifies the AWS Config recorder is active — it
+    is the authoritative resource inventory — and that every instance
+    carries the ownership tags (owner, environment, data_classification)
+    that make it a tracked, accountable asset.
+
+  rationale: |
+    An asset that is not recorded cannot be patched, monitored, or
+    decommissioned, and it is invisible to every downstream Identify and
+    Protect control. ID.AM-03 audits fail when Config is disabled or when
+    untagged, orphaned instances exist that no owner is accountable for.
 
   evidence:
-    - id: nist_csf_2_id_am_03
+    - id: ec2_inventory
       source: aws
-      type: aws_resource_inventory
+      type: ec2_inventory
       fixture: ../tests/fixtures/nist-csf-2-id-am-03-pass.json
       params:
-              service: TODO  # e.g. s3, iam, kms
-              region: us-east-1
+        region: ${env.AWS_REGION}
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_id_am_03
+    package: concord.nist_csf_2.id_am_03
     file: ../policies/nist-csf-2-id-am-03.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-id-am-03.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 1d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "ID.AM-03"
+    nist_800_53:
+      - "CM-8"
+      - "PM-5"
+    iso27001:
+      - "A.5.9"
+
+  status: stable
+  blocking: true

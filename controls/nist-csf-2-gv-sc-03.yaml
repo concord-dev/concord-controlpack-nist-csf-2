@@ -4,37 +4,64 @@ kind: Control
 metadata:
   id: NIST-CSF-2-GV.SC-03
   name: nist-csf-2-gv-sc-03
-  title: Cybersecurity supply chain risks are integrated into the org cyber program
+  title: Cybersecurity supply chain risk management is integrated into the cybersecurity program
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Govern
+  severity: high
+  tags:
+    - nist-csf
+    - govern
+    - supply-chain
   owners:
-    - team: concord-dev
+    - team: vendor-management
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-GV.SC-03 enforces.
+    NIST CSF 2.0 GV.SC-03 requires cybersecurity supply chain risk
+    management to be integrated into the broader cybersecurity and
+    enterprise risk management programs, including monitoring over the
+    relationship lifecycle. Concord reads a cosigned C-SCRM integration
+    attestation that records how supplier risk feeds the enterprise risk
+    process, the criteria used to assess supplier risk, the ongoing
+    monitoring approach, and the date the integration was last reviewed.
+
+  rationale: |
+    Supply-chain risk that is tracked in a silo never reaches the
+    decision-makers who accept or mitigate it. GV.SC-03 confirms that
+    supplier risk is folded into the same register and reviews as every
+    other cyber risk. The attestation records the integration points,
+    risk criteria, and monitoring so the linkage is auditable and current.
 
   evidence:
-    - id: nist_csf_2_gv_sc_03
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-gv-sc-03-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: scrm_integration
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_gv_sc_03
+    package: concord.nist_csf_2.gv_sc_03
     file: ../policies/nist-csf-2-gv-sc-03.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-gv-sc-03.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 3d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "GV.SC-03"
+    nist_800_53:
+      - "SR-1"
+      - "SR-2"
+      - "PM-30"
+    iso27001:
+      - "A.5.19"
+      - "A.5.21"
+    soc2:
+      - "CC9.2"
+
+  status: stable
+  blocking: true

@@ -6,35 +6,59 @@ metadata:
   name: nist-csf-2-id-am-08
   title: Systems, hardware, software, and services are managed throughout their lifecycle
   framework: nist-csf-2
+  category: Identify
   severity: medium
-  tags: []
+  tags:
+    - nist-csf-2
+    - identify
+    - asset-management
+    - lifecycle
   owners:
-    - team: concord-dev
+    - team: platform
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-ID.AM-08 enforces.
+    NIST CSF 2.0 ID.AM-08 requires systems, hardware, software, services,
+    and data to be managed throughout their life cycles. Concord verifies a
+    signed asset-lifecycle attestation that defines the lifecycle stages an
+    asset moves through, documents the decommissioning process, describes
+    how ownership is tracked across those stages, and shows the process was
+    reviewed within the last year.
+
+  rationale: |
+    Most exposure accrues at the edges of the lifecycle: assets provisioned
+    without ownership and assets retired without secure disposal. ID.AM-08
+    fails when there are no defined lifecycle stages or no decommissioning
+    process, leaving orphaned and unwiped assets that keep credentials and
+    data reachable long after they should have been retired.
 
   evidence:
-    - id: nist_csf_2_id_am_08
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-id-am-08-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: asset_lifecycle
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_id_am_08
+    package: concord.nist_csf_2.id_am_08
     file: ../policies/nist-csf-2-id-am-08.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-id-am-08.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "ID.AM-08"
+    nist_800_53:
+      - "CM-8"
+      - "PM-5"
+    iso27001:
+      - "A.5.9"
+      - "A.8.10"
+
+  status: stable
+  blocking: true

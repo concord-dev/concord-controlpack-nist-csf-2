@@ -1,11 +1,11 @@
 {
-  "nist_csf_2_rc_co_03": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "recovery_communication",
+  "signature_verified": true,
+  "attested_fields": {
+    "communication_plan": "Recovery status is published to the #incident-bridge channel and a stakeholder status page from a single incident-commander source of truth",
+    "stakeholder_matrix": "exec sponsor, legal, comms, affected business owners, and the impacted customer's TAM are notified per the RACI in the DR runbook",
+    "update_cadence": "internal updates every 30m and external updates every 4h until recovery is declared complete",
+    "last_reviewed_at": "2026-06-08",
+    "review_age_days": 32
   }
 }

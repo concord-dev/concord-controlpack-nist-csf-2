@@ -1,11 +1,10 @@
 {
-  "nist_csf_2_gv_rm_03": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "erm_integration",
+  "signature_verified": true,
+  "attested_fields": {
+    "integration_process": "Cyber risks scored in Concord are mapped onto the enterprise risk taxonomy and consolidated into the quarterly ERM register maintained by the Chief Risk Officer.",
+    "erm_reporting": "Top cyber risks are reported to the Board Risk Committee each quarter alongside financial, operational, and strategic risks using a common heat-map.",
+    "escalation_path": "Risks breaching tolerance are escalated to the CRO within 5 business days and to the Board Risk Committee at the next scheduled meeting or sooner if material.",
+    "last_reviewed_at": "2026-06-22T00:00:00Z"
   }
 }

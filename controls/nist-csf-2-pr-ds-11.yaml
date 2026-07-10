@@ -6,33 +6,75 @@ metadata:
   name: nist-csf-2-pr-ds-11
   title: Data-in-transit is protected
   framework: nist-csf-2
+  category: Protect
   severity: critical
-  tags: []
+  tags:
+    - nist-csf
+    - protect
+    - data-security
+    - tls
+    - aws
   owners:
-    - team: concord-dev
+    - team: platform
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-PR.DS-11 enforces.
+    NIST CSF 2.0 subcategory PR.DS-11 (Data Security) requires that the
+    confidentiality, integrity, and availability of data-in-transit be
+    protected. The AWS-side technical minimum is that every endpoint carrying
+    sensitive data enforces TLS 1.2 or higher. Concord inspects transmission
+    endpoints tagged sensitive="true" and denies: S3 buckets whose bucket
+    policy does not deny requests where aws:SecureTransport is false; load
+    balancer listeners that transmit traffic over a plaintext protocol
+    (HTTP/TCP); and TLS/HTTPS listeners whose SSL security policy permits
+    protocol versions below TLS 1.2. This implements NIST 800-53 SC-8
+    (Transmission Confidentiality and Integrity) as the control behind
+    PR.DS-11. An absent evidence payload denies (fail-closed).
+
+  rationale: |
+    Data moving over a network is exposed to interception, tampering, and
+    downgrade attacks unless it is wrapped in strong, current transport
+    encryption. Allowing a bucket to serve objects over plain HTTP, or a load
+    balancer to negotiate TLS 1.0/1.1, leaves a usable path for an attacker on
+    the network to read or alter sensitive data, so a bucket policy that merely
+    permits — rather than actively denies — non-TLS access is treated as a
+    failure. Pinning the minimum to TLS 1.2 rejects protocol versions with known
+    cryptographic weaknesses. Each endpoint is evaluated on its own and missing
+    evidence denies, so a single insecure listener cannot hide behind an
+    otherwise compliant estate.
 
   evidence:
-    - id: nist_csf_2_pr_ds_11
+    - id: transit_endpoints
       source: aws
-      type: aws_resource_inventory
+      type: aws_tls_endpoints
       fixture: ../tests/fixtures/nist-csf-2-pr-ds-11-pass.json
       params:
-              service: TODO  # e.g. s3, iam, kms
-              region: us-east-1
+        region: ${env.AWS_REGION}
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_pr_ds_11
+    package: concord.nist_csf_2.pr_ds_11
     file: ../policies/nist-csf-2-pr-ds-11.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-pr-ds-11.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2h
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "PR.DS-11"
+    nist_800_53:
+      - "SC-8"
+      - "SC-8(1)"
+    soc2:
+      - "CC6.7"
+    iso27001:
+      - "A.8.24"
+    pci_dss:
+      - "4.2.1"
+    hipaa:
+      - "164.312(e)(1)"
+
+  status: stable
+  blocking: true

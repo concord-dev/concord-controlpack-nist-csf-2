@@ -1,8 +1,10 @@
 {
-  "nist_csf_2_pr_aa_06": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": false, "reason": "public access block disabled" }
-    ]
+  "kind": "physical_access",
+  "signature_verified": true,
+  "attested_fields": {
+    "access_control_measures": ["badge readers", "mantrap", "biometric turnstile", "escorted visitors"],
+    "authorized_roles": [],
+    "access_logging": false,
+    "last_reviewed_at": "2026-06-02T00:00:00Z"
   }
 }

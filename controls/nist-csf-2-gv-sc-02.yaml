@@ -4,37 +4,63 @@ kind: Control
 metadata:
   id: NIST-CSF-2-GV.SC-02
   name: nist-csf-2-gv-sc-02
-  title: Roles and responsibilities for suppliers are established
+  title: Cybersecurity roles and responsibilities for suppliers are established
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Govern
+  severity: high
+  tags:
+    - nist-csf
+    - govern
+    - supply-chain
   owners:
-    - team: concord-dev
+    - team: vendor-management
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-GV.SC-02 enforces.
+    NIST CSF 2.0 GV.SC-02 requires cybersecurity roles and
+    responsibilities for suppliers, customers, and partners to be
+    established, communicated, and coordinated internally and externally.
+    Concord reads a cosigned supplier-roles attestation that records the
+    security responsibilities placed on suppliers, the internal owners
+    accountable for each supplier tier, the escalation path when
+    obligations are unmet, and the date the assignments were last reviewed.
+
+  rationale: |
+    Unowned supplier relationships are where third-party risk hides. GV.SC-02
+    confirms that both sides know their security obligations and that a named
+    internal owner and escalation path exist. The attestation makes those
+    responsibilities and owners explicit so accountability does not fall
+    through the cracks between teams.
 
   evidence:
-    - id: nist_csf_2_gv_sc_02
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-gv-sc-02-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: supplier_roles
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_gv_sc_02
+    package: concord.nist_csf_2.gv_sc_02
     file: ../policies/nist-csf-2-gv-sc-02.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-gv-sc-02.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 3d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "GV.SC-02"
+    nist_800_53:
+      - "SR-2"
+      - "SR-3"
+    iso27001:
+      - "A.5.19"
+      - "A.5.20"
+    soc2:
+      - "CC9.2"
+
+  status: stable
+  blocking: true

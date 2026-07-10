@@ -1,40 +1,48 @@
 apiVersion: concord.dev/v1
 kind: Control
-
 metadata:
   id: NIST-CSF-2-RS.MA-05
-  name: nist-csf-2-rs-ma-05
-  title: Criteria for initiating incident recovery are applied
+  name: recovery-initiation-criteria-applied
+  title: The criteria for initiating incident recovery are applied
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Respond
+  severity: high
+  tags: [nist-csf, respond, incidents, recovery]
   owners:
-    - team: concord-dev
-
+    - team: security
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-RS.MA-05 enforces.
-
+    NIST CSF 2.0 RS.MA-05 requires that defined criteria for starting
+    recovery from an incident be applied, so recovery begins only once
+    containment/eradication is confirmed and the right approval is given.
+    Concord reads a cosigned recovery-initiation attestation that records
+    the criteria that must be met before recovery starts, the approval
+    process, how the incident is handed off to the recovery process, and
+    when these criteria were last reviewed.
+  rationale: |
+    Starting recovery before an incident is contained can reintroduce the
+    adversary or destroy forensic evidence. Applying explicit initiation
+    criteria with an approval gate prevents a premature restore. The signed
+    attestation proves the criteria exist, are owned, and are kept current.
   evidence:
-    - id: nist_csf_2_rs_ma_05
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-rs-ma-05-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
-
+        kind: recovery_initiation
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_rs_ma_05
+    package: concord.nist_csf_2.rs_ma_05
     file: ../policies/nist-csf-2-rs-ma-05.rego
-
   remediation:
     runbook: docs/remediation/nist-csf-2-rs-ma-05.md
     auto_fix: false
     estimated_effort: 30m
-
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf: ["RS.MA-05"]
+    nist_800_53: ["IR-4", "IR-5", "IR-8"]
+    iso27001: ["A.5.26", "A.5.29"]
+    soc2: ["CC7.4", "CC7.5"]
+  status: stable
+  blocking: true

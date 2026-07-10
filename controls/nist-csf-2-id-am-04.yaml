@@ -6,33 +6,59 @@ metadata:
   name: nist-csf-2-id-am-04
   title: Inventories of services provided by suppliers are maintained
   framework: nist-csf-2
+  category: Identify
   severity: high
-  tags: []
+  tags:
+    - nist-csf-2
+    - identify
+    - inventory
+    - supply-chain
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-ID.AM-04 enforces.
+    NIST CSF 2.0 ID.AM-04 requires the organization to maintain an
+    inventory of the services it obtains from suppliers. Concord verifies
+    a signed supplier-services attestation that enumerates each externally
+    provided service, maps every service to the supplier that delivers it,
+    records how supplier criticality is rated, and shows the inventory was
+    reviewed within the last year.
+
+  rationale: |
+    Supplier services are part of the attack surface even though the
+    organization does not run them. ID.AM-04 fails when third-party
+    dependencies are undocumented, because an unmapped supplier cannot be
+    risk-tiered, monitored (DE.CM-06), or included in incident response,
+    leaving supply-chain exposure invisible to the risk program.
 
   evidence:
-    - id: nist_csf_2_id_am_04
-      source: aws
-      type: aws_resource_inventory
+    - id: attestation
+      source: attestation
+      type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-id-am-04-pass.json
       params:
-              service: TODO  # e.g. s3, iam, kms
-              region: us-east-1
+        kind: supplier_services_inventory
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_id_am_04
+    package: concord.nist_csf_2.id_am_04
     file: ../policies/nist-csf-2-id-am-04.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-id-am-04.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "ID.AM-04"
+    nist_800_53:
+      - "CM-8"
+      - "PM-5"
+    iso27001:
+      - "A.5.19"
+      - "A.5.21"
+
+  status: stable
+  blocking: true

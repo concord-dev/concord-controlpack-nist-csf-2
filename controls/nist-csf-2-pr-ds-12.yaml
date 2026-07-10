@@ -6,35 +6,73 @@ metadata:
   name: nist-csf-2-pr-ds-12
   title: Backups are maintained, protected, and tested
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Protect
+  severity: high
+  tags:
+    - nist-csf
+    - protect
+    - data-security
+    - backup
+    - aws
   owners:
-    - team: concord-dev
+    - team: platform
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-PR.DS-12 enforces.
+    NIST CSF 2.0 subcategory PR.DS-12 (Data Security) requires that backups of
+    data be created, maintained, protected against tampering, and tested for
+    reliability. Concord verifies this technically against the live AWS backup
+    posture for every in-scope data store (tagged sensitive="true"): RDS
+    instances must retain automated backups for at least 30 days; DynamoDB
+    tables must have point-in-time recovery enabled; AWS Backup vaults that
+    hold in-scope data must be vault-locked so retained recovery points cannot
+    be deleted or shortened; and each such vault must have had a successful
+    restore test within the last 365 days. This implements NIST 800-53 CP-9
+    (System Backup) and CP-9(1) (Testing for Reliability and Integrity) as the
+    controls behind PR.DS-12. An absent evidence payload denies (fail-closed).
+
+  rationale: |
+    Backups are the last line of defense against ransomware, accidental
+    deletion, and silent corruption, but only when they are automated, retained
+    long enough to outlast a slow-burn compromise, protected from tampering, and
+    proven restorable. Ransomware operators routinely delete or encrypt backups
+    first, which is why vault locking (immutable retention) is required rather
+    than optional, and why an untested backup is treated as a hypothesis rather
+    than a recovery capability. Reading retention periods, PITR state, vault
+    locks, and restore-test recency directly from AWS makes the control
+    continuously verifiable instead of a point-in-time attestation, and each
+    resource is judged individually so one unprotected store fails the control.
 
   evidence:
-    - id: nist_csf_2_pr_ds_12
-      source: attestation
-      type: policy_attestation
+    - id: data_backups
+      source: aws
+      type: backup_status
       fixture: ../tests/fixtures/nist-csf-2-pr-ds-12-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        region: ${env.AWS_REGION}
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_pr_ds_12
+    package: concord.nist_csf_2.pr_ds_12
     file: ../policies/nist-csf-2-pr-ds-12.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-pr-ds-12.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 4h
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "PR.DS-12"
+    nist_800_53:
+      - "CP-9"
+      - "CP-9(1)"
+    soc2:
+      - "A1.2"
+    iso27001:
+      - "A.8.13"
+    hipaa:
+      - "164.308(a)(7)(ii)(A)"
+
+  status: stable
+  blocking: true

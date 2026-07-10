@@ -1,11 +1,14 @@
 {
-  "nist_csf_2_id_ra_05": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "risk_determination",
+  "signature_verified": true,
+  "attested_fields": {
+    "risk_methodology": "risk = f(threat, vulnerability, impact) scored on a 5x5 likelihood-by-impact matrix aligned to NIST SP 800-30",
+    "prioritized_risks": [
+      {"id": "R-001", "score": 20, "priority": "critical"},
+      {"id": "R-002", "score": 12, "priority": "high"},
+      {"id": "R-003", "score": 4, "priority": "low"}
+    ],
+    "review_cadence": "risks re-scored quarterly and after any major change or incident",
+    "last_reviewed_at": "2026-06-04T00:00:00Z"
   }
 }

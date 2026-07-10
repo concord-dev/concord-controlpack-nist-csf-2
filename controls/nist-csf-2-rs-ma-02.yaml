@@ -1,40 +1,48 @@
 apiVersion: concord.dev/v1
 kind: Control
-
 metadata:
   id: NIST-CSF-2-RS.MA-02
-  name: nist-csf-2-rs-ma-02
+  name: incident-reports-triaged-validated
   title: Incident reports are triaged and validated
   framework: nist-csf-2
+  category: Respond
   severity: high
-  tags: []
+  tags: [nist-csf, respond, incidents, triage]
   owners:
-    - team: concord-dev
-
+    - team: security
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-RS.MA-02 enforces.
-
+    NIST CSF 2.0 RS.MA-02 requires that incident reports be triaged and
+    validated so that genuine incidents are distinguished from false
+    positives and handled within defined service levels. Concord reads a
+    cosigned incident-triage attestation that records the documented
+    triage process, the criteria used to validate that a report is a real
+    incident, the triage SLA targets, and when the process was last
+    reviewed.
+  rationale: |
+    Without a validated triage step, responders burn effort on false
+    positives while real incidents slip past their SLA. The signed
+    attestation proves the triage and validation process exists, is
+    owned, and is kept current.
   evidence:
-    - id: nist_csf_2_rs_ma_02
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-rs-ma-02-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
-
+        kind: incident_triage
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_rs_ma_02
+    package: concord.nist_csf_2.rs_ma_02
     file: ../policies/nist-csf-2-rs-ma-02.rego
-
   remediation:
     runbook: docs/remediation/nist-csf-2-rs-ma-02.md
     auto_fix: false
     estimated_effort: 30m
-
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf: ["RS.MA-02"]
+    nist_800_53: ["IR-4", "IR-5", "IR-8"]
+    iso27001: ["A.5.25", "A.5.26"]
+    soc2: ["CC7.3", "CC7.4"]
+  status: stable
+  blocking: true

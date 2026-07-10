@@ -1,11 +1,10 @@
 {
-  "nist_csf_2_gv_po_02": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "cyber_policy_management",
+  "signature_verified": true,
+  "attested_fields": {
+    "review_cycle": "Annual scheduled review plus event-driven review on any material change to threats, technology, or regulatory obligations.",
+    "communication_method": "Published in the policy portal; acknowledgement required from all staff at hire and at each annual revision via the attestation campaign.",
+    "exception_process": "Time-bound exceptions requested in Concord, risk-assessed, and approved by the CISO with an expiry date and compensating controls.",
+    "last_reviewed_at": "2026-06-12T00:00:00Z"
   }
 }

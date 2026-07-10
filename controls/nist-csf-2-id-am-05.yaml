@@ -6,33 +6,60 @@ metadata:
   name: nist-csf-2-id-am-05
   title: Assets are prioritized based on classification, criticality, and value
   framework: nist-csf-2
+  category: Identify
   severity: medium
-  tags: []
+  tags:
+    - nist-csf-2
+    - identify
+    - asset-management
+    - risk-management
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-ID.AM-05 enforces.
+    NIST CSF 2.0 ID.AM-05 requires assets to be prioritized based on their
+    classification, criticality, resources, and impact on the mission.
+    Concord verifies a signed asset-prioritization attestation that records
+    the classification scheme in use, the criteria used to judge
+    criticality, the resulting prioritized set of assets, and evidence the
+    prioritization was reviewed within the last year.
+
+  rationale: |
+    Finite security resources must be concentrated on the assets that
+    matter most. ID.AM-05 fails when there is no classification scheme or
+    no prioritized asset list, because without prioritization every
+    downstream control (monitoring depth, recovery objectives, access
+    restriction) is applied uniformly and the highest-value systems are
+    under-protected.
 
   evidence:
-    - id: nist_csf_2_id_am_05
-      source: aws
-      type: aws_resource_inventory
+    - id: attestation
+      source: attestation
+      type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-id-am-05-pass.json
       params:
-              service: TODO  # e.g. s3, iam, kms
-              region: us-east-1
+        kind: asset_prioritization
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_id_am_05
+    package: concord.nist_csf_2.id_am_05
     file: ../policies/nist-csf-2-id-am-05.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-id-am-05.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "ID.AM-05"
+    nist_800_53:
+      - "CM-8"
+      - "PM-5"
+    iso27001:
+      - "A.5.9"
+      - "A.5.12"
+
+  status: stable
+  blocking: true

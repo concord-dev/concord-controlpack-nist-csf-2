@@ -1,40 +1,49 @@
 apiVersion: concord.dev/v1
 kind: Control
-
 metadata:
   id: NIST-CSF-2-RC.RP-03
-  name: nist-csf-2-rc-rp-03
-  title: Integrity of backups and other restoration assets is verified
+  name: backup-integrity-verified
+  title: Integrity of backups and other restoration assets is verified before use
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Recover
+  severity: high
+  tags: [nist-csf, recover, backup, integrity, aws]
   owners:
-    - team: concord-dev
-
+    - team: platform
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-RC.RP-03 enforces.
-
+    NIST CSF 2.0 RC.RP-03 requires that the integrity of backups and other
+    restoration assets be verified before they are relied upon for recovery.
+    Concord reads the AWS backup posture and confirms that every recovery point
+    has had its integrity verified, that its most recent integrity check
+    succeeded, and that the check is recent (within 30 days), so a corrupted or
+    tampered backup is caught before it is ever restored.
+  rationale: |
+    A backup that has never been integrity-checked is a hope, not a recovery
+    capability. Silent bit-rot, truncated snapshots, and ransomware that quietly
+    corrupts or encrypts backups before detonating all defeat recovery at the
+    worst possible moment. Verifying integrity continuously and failing closed
+    when a check is stale or has failed turns "we have backups" into "we have
+    restorable backups."
   evidence:
-    - id: nist_csf_2_rc_rp_03
-      source: attestation
-      type: policy_attestation
+    - id: backups
+      source: aws
+      type: backup_status
       fixture: ../tests/fixtures/nist-csf-2-rc-rp-03-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
-
+        region: ${env.AWS_REGION}
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_rc_rp_03
+    package: concord.nist_csf_2.rc_rp_03
     file: ../policies/nist-csf-2-rc-rp-03.rego
-
   remediation:
     runbook: docs/remediation/nist-csf-2-rc-rp-03.md
     auto_fix: false
-    estimated_effort: 30m
-
-  status: draft
-  blocking: false
+    estimated_effort: 2h
+  mappings:
+    nist_csf: ["RC.RP-03"]
+    nist_800_53: ["CP-9(1)", "CP-10", "SI-7"]
+    iso27001: ["A.8.13"]
+    soc2: ["A1.2", "A1.3"]
+  status: stable
+  blocking: true

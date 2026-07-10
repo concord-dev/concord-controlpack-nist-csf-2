@@ -1,11 +1,9 @@
 {
-  "nist_csf_2_gv_rm_03": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2023-01-01T00:00:00Z",
-    "expires_at": "2024-06-01T00:00:00Z",
-    "attested_fields": ["scope"]
+  "kind": "erm_integration",
+  "signature_verified": false,
+  "attested_fields": {
+    "integration_process": "Cyber risk is tracked in a separate spreadsheet.",
+    "erm_reporting": "Ad hoc.",
+    "last_reviewed_at": "2026-06-22T00:00:00Z"
   }
 }

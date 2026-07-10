@@ -1,40 +1,48 @@
 apiVersion: concord.dev/v1
 kind: Control
-
 metadata:
   id: NIST-CSF-2-RC.CO-03
-  name: nist-csf-2-rc-co-03
-  title: Recovery activities and progress are communicated to internal and external parties
+  name: recovery-progress-communicated
+  title: Recovery activities and progress are communicated to internal and external stakeholders
   framework: nist-csf-2
+  category: Recover
   severity: medium
-  tags: []
+  tags: [nist-csf, recover, communications]
   owners:
-    - team: concord-dev
-
+    - team: security
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-RC.CO-03 enforces.
-
+    NIST CSF 2.0 RC.CO-03 requires that recovery activities and their progress
+    be communicated to designated internal and external stakeholders. Concord
+    reads a cosigned recovery-communication attestation that records the
+    documented communication plan, the stakeholder matrix that maps who must be
+    told what, the cadence for status updates during a recovery, and when the
+    plan was last reviewed.
+  rationale: |
+    During a disruption, leadership, responders, customers, and regulators all
+    need a consistent picture of where recovery stands; ad-hoc communication
+    breeds rumor, duplicated effort, and missed regulatory deadlines. The signed
+    attestation proves a communication plan and stakeholder matrix exist, are
+    owned, and are kept current rather than improvised mid-incident.
   evidence:
-    - id: nist_csf_2_rc_co_03
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-rc-co-03-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
-
+        kind: recovery_communication
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_rc_co_03
+    package: concord.nist_csf_2.rc_co_03
     file: ../policies/nist-csf-2-rc-co-03.rego
-
   remediation:
     runbook: docs/remediation/nist-csf-2-rc-co-03.md
     auto_fix: false
     estimated_effort: 30m
-
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf: ["RC.CO-03"]
+    nist_800_53: ["IR-4", "CP-2"]
+    iso27001: ["A.5.24", "A.5.26"]
+    soc2: ["CC2.2", "CC2.3", "CC7.4"]
+  status: stable
+  blocking: true

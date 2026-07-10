@@ -104,5 +104,7 @@ spec:
       version: ">=v0.1.0,<v1.0.0"
     - source: okta
       version: ">=v0.1.0,<v1.0.0"
+    - source: snyk
+      version: ">=v0.1.0,<v1.0.0"
     - source: attestation
       version: ">=v0.1.0,<v1.0.0"

@@ -6,35 +6,58 @@ metadata:
   name: nist-csf-2-id-ra-04
   title: Potential impacts and likelihoods of threats are recorded
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Identify
+  severity: high
+  tags:
+    - nist-csf-2
+    - identify
+    - risk-assessment
+    - risk-analysis
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-ID.RA-04 enforces.
+    NIST CSF 2.0 ID.RA-04 requires the potential impacts and likelihoods of
+    threats exploiting vulnerabilities to be identified and recorded.
+    Concord verifies a signed risk-impact attestation that publishes the
+    impact scale and likelihood scale in use, records a set of risks scored
+    against those scales, and shows the analysis was reviewed within the
+    last year.
+
+  rationale: |
+    Risk cannot be prioritized without consistent impact and likelihood
+    scales applied to recorded risks. ID.RA-04 fails when the scales are
+    undefined or no risks have been scored, because impact and likelihood
+    then become ad hoc judgements that cannot be compared, ranked, or
+    tracked over time.
 
   evidence:
-    - id: nist_csf_2_id_ra_04
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-id-ra-04-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: risk_impact_analysis
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_id_ra_04
+    package: concord.nist_csf_2.id_ra_04
     file: ../policies/nist-csf-2-id-ra-04.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-id-ra-04.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "ID.RA-04"
+    nist_800_53:
+      - "RA-3"
+      - "PM-16"
+    soc2:
+      - "CC3.2"
+
+  status: stable
+  blocking: true

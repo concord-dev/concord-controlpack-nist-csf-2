@@ -1,8 +1,18 @@
 {
-  "nist_csf_2_id_am_04": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": true, "reason": "" }
-    ]
+  "kind": "supplier_services_inventory",
+  "signature_verified": true,
+  "attested_fields": {
+    "services_inventory": [
+      {"service": "log aggregation", "supplier": "Datadog"},
+      {"service": "transactional email", "supplier": "Postmark"},
+      {"service": "cloud hosting", "supplier": "AWS"}
+    ],
+    "supplier_mapping": [
+      {"supplier": "Datadog", "services": ["log aggregation"], "contact": "vendor-mgmt@acme.com"},
+      {"supplier": "Postmark", "services": ["transactional email"]},
+      {"supplier": "AWS", "services": ["cloud hosting"]}
+    ],
+    "criticality_rating": "tiered: tier_1 for AWS, tier_2 for Datadog and Postmark",
+    "last_reviewed_at": "2026-06-15T00:00:00Z"
   }
 }

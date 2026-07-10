@@ -6,35 +6,59 @@ metadata:
   name: nist-csf-2-id-ra-05
   title: Threats, vulnerabilities, likelihoods, and impacts are used to determine risk
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Identify
+  severity: high
+  tags:
+    - nist-csf-2
+    - identify
+    - risk-assessment
+    - risk-prioritization
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-ID.RA-05 enforces.
+    NIST CSF 2.0 ID.RA-05 requires threats, vulnerabilities, likelihoods,
+    and impacts to be used to understand inherent risk and to inform risk
+    prioritization. Concord verifies a signed risk-determination attestation
+    that documents the methodology combining those inputs, publishes the
+    resulting prioritized set of risks, states the cadence at which risk is
+    re-determined, and shows the analysis was reviewed within the last year.
+
+  rationale: |
+    ID.RA-05 is the synthesis step that turns the threat model (ID.RA-03)
+    and the impact/likelihood analysis (ID.RA-04) into a prioritized risk
+    picture the business acts on. It fails when there is no documented
+    methodology or no prioritized risks, because risk treatment decisions
+    then have no defensible, repeatable basis.
 
   evidence:
-    - id: nist_csf_2_id_ra_05
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-id-ra-05-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: risk_determination
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_id_ra_05
+    package: concord.nist_csf_2.id_ra_05
     file: ../policies/nist-csf-2-id-ra-05.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-id-ra-05.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "ID.RA-05"
+    nist_800_53:
+      - "RA-3"
+      - "RA-5"
+      - "PM-16"
+    soc2:
+      - "CC3.2"
+
+  status: stable
+  blocking: true

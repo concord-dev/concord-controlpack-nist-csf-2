@@ -1,40 +1,50 @@
 apiVersion: concord.dev/v1
 kind: Control
-
 metadata:
   id: NIST-CSF-2-RC.RP-06
-  name: nist-csf-2-rc-rp-06
-  title: End of incident recovery is declared based on criteria
+  name: end-of-recovery-declared
+  title: End of incident recovery is declared based on documented criteria
   framework: nist-csf-2
-  severity: low
-  tags: []
+  category: Recover
+  severity: medium
+  tags: [nist-csf, recover, incidents]
   owners:
-    - team: concord-dev
-
+    - team: security
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-RC.RP-06 enforces.
-
+    NIST CSF 2.0 RC.RP-06 requires that the end of incident recovery be declared
+    based on criteria and that incident-related documentation be completed.
+    Concord reads a cosigned recovery-completion attestation that records the
+    completion criteria that must be met to declare recovery over, the authority
+    empowered to make that declaration, the post-incident review that must be
+    performed, and when the process was last reviewed.
+  rationale: |
+    Declaring an incident "over" prematurely stands responders down while risk
+    remains, while never formally closing it leaves the organization in a
+    perpetual crisis posture and skips the lessons-learned step. Explicit
+    completion criteria, a named decision authority, and a required
+    post-incident review make closure a defensible, documented decision. The
+    signed attestation proves this closure process exists, is owned, and is kept
+    current.
   evidence:
-    - id: nist_csf_2_rc_rp_06
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-rc-rp-06-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
-
+        kind: recovery_completion
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_rc_rp_06
+    package: concord.nist_csf_2.rc_rp_06
     file: ../policies/nist-csf-2-rc-rp-06.rego
-
   remediation:
     runbook: docs/remediation/nist-csf-2-rc-rp-06.md
     auto_fix: false
     estimated_effort: 30m
-
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf: ["RC.RP-06"]
+    nist_800_53: ["CP-10", "IR-4"]
+    iso27001: ["A.5.27", "A.5.29"]
+    soc2: ["CC7.5"]
+  status: stable
+  blocking: true

@@ -3,36 +3,66 @@ kind: Control
 
 metadata:
   id: NIST-CSF-2-DE.AE-08
-  name: nist-csf-2-de-ae-08
-  title: Incidents are declared when adverse events meet defined criteria
+  name: incidents-declared-on-criteria
+  title: Incidents are declared when adverse events meet defined incident criteria
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Detect
+  severity: high
+  tags:
+    - nist-csf
+    - detect
+    - incidents
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-DE.AE-08 enforces.
+    NIST CSF 2.0 DE.AE-08 requires that incidents are declared when adverse
+    events meet the organization's defined incident criteria. Concord reads a
+    cosigned incident-declaration attestation that records the declaration
+    criteria, the severity matrix used to classify a declared incident, the
+    decision authority empowered to declare, and the date the process was last
+    reviewed.
+
+  rationale: |
+    Declaring an incident is what activates the response plan, notification
+    clocks, and regulatory timelines; if the trigger is left to individual
+    judgement, genuine incidents get quietly closed as "just an alert" and
+    response is delayed. Objective, pre-agreed criteria, a severity matrix, and
+    a named decision authority make declaration consistent and defensible.
+    Concord fails closed when the attestation is missing, unsigned, incomplete,
+    or stale, because an undocumented declaration bar is effectively no bar.
 
   evidence:
-    - id: nist_csf_2_de_ae_08
-      source: aws
-      type: aws_resource_inventory
+    - id: attestation
+      source: attestation
+      type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-de-ae-08-pass.json
       params:
-              service: TODO  # e.g. s3, iam, kms
-              region: us-east-1
+        kind: incident_declaration
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_de_ae_08
+    package: concord.nist_csf_2.de_ae_08
     file: ../policies/nist-csf-2-de-ae-08.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-de-ae-08.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 1d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "DE.AE-08"
+    nist_800_53:
+      - "IR-4"
+      - "IR-8"
+      - "AU-6"
+    iso27001:
+      - "A.5.25"
+    soc2:
+      - "CC7.3"
+      - "CC7.4"
+
+  status: stable
+  blocking: true

@@ -1,8 +1,8 @@
 {
-  "nist_csf_2_id_am_04": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": false, "reason": "public access block disabled" }
-    ]
+  "kind": "supplier_services_inventory",
+  "signature_verified": false,
+  "attested_fields": {
+    "services_inventory": [],
+    "supplier_mapping": []
   }
 }

@@ -1,8 +1,10 @@
 {
-  "nist_csf_2_de_ae_07": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": true, "reason": "" }
-    ]
+  "kind": "cti_integration",
+  "signature_verified": true,
+  "attested_fields": {
+    "intel_feeds": ["MISP community feed", "AWS GuardDuty threat lists", "sector ISAC"],
+    "detection_tuning_process": "IOCs and TTPs from feeds are converted weekly into SIEM detections and GuardDuty threat lists, with false positives fed back",
+    "review_cadence": "weekly",
+    "last_reviewed_at": "2026-06-08T00:00:00Z"
   }
 }

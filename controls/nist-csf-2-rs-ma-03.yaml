@@ -1,40 +1,46 @@
 apiVersion: concord.dev/v1
 kind: Control
-
 metadata:
   id: NIST-CSF-2-RS.MA-03
-  name: nist-csf-2-rs-ma-03
+  name: incidents-categorized-prioritized
   title: Incidents are categorized and prioritized
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Respond
+  severity: high
+  tags: [nist-csf, respond, incidents, prioritization]
   owners:
-    - team: concord-dev
-
+    - team: security
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-RS.MA-03 enforces.
-
+    NIST CSF 2.0 RS.MA-03 requires that incidents be categorized and
+    prioritized so that response effort is directed at the incidents that
+    matter most. Concord reads a cosigned incident-categorization
+    attestation that records the category scheme, the priority/severity
+    matrix, the rules for assigning an incident to a responder or team,
+    and when the scheme was last reviewed.
+  rationale: |
+    A shared category scheme and priority matrix keep responders from
+    guessing at severity and ownership under pressure. The signed
+    attestation proves the scheme exists, is owned, and is kept current.
   evidence:
-    - id: nist_csf_2_rs_ma_03
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-rs-ma-03-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
-
+        kind: incident_categorization
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_rs_ma_03
+    package: concord.nist_csf_2.rs_ma_03
     file: ../policies/nist-csf-2-rs-ma-03.rego
-
   remediation:
     runbook: docs/remediation/nist-csf-2-rs-ma-03.md
     auto_fix: false
     estimated_effort: 30m
-
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf: ["RS.MA-03"]
+    nist_800_53: ["IR-4", "IR-5", "IR-8"]
+    iso27001: ["A.5.25"]
+    soc2: ["CC7.3", "CC7.4"]
+  status: stable
+  blocking: true

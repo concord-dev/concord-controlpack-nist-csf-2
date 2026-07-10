@@ -1,8 +1,10 @@
 {
-  "nist_csf_2_de_cm_02": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": true, "reason": "" }
-    ]
+  "kind": "physical_monitoring",
+  "signature_verified": true,
+  "attested_fields": {
+    "monitoring_controls": ["24x7 CCTV", "badge access logging", "temperature and water-leak sensors"],
+    "coverage_areas": ["HQ server room", "reception and building entrances", "loading dock"],
+    "alerting": "Door-forced and after-hours motion events page facilities and security; environmental sensor breaches open a ticket",
+    "last_reviewed_at": "2026-06-03T00:00:00Z"
   }
 }

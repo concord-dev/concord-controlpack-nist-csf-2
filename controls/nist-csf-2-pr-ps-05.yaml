@@ -6,35 +6,49 @@ metadata:
   name: nist-csf-2-pr-ps-05
   title: Installation and execution of unauthorized software is prevented
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Protect
+  severity: high
+  tags: [nist-csf, protect, software, allowlisting, endpoint]
   owners:
-    - team: concord-dev
+    - team: platform
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-PR.PS-05 enforces.
+    NIST CSF 2.0 PR.PS-05 requires that the installation and execution of
+    unauthorized software is prevented. Concord reads a signed attestation for
+    the software allowlisting program and verifies that it documents the
+    allowlisting method/technology (e.g. WDAC, AppLocker, MDM app control,
+    signed-image policy), the enforcement points it covers, the exception
+    process for authorizing new software, and a recent review date.
+  rationale: |
+    Allowlisting is one of the most effective controls against malware and
+    living-off-the-land attacks because it blocks unknown binaries by default.
+    An attested method, broad enforcement coverage, and a governed exception
+    path are what distinguish an enforced allowlist from an audit-only list.
 
   evidence:
-    - id: nist_csf_2_pr_ps_05
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-pr-ps-05-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: software_allowlisting
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_pr_ps_05
+    package: concord.nist_csf_2.pr_ps_05
     file: ../policies/nist-csf-2-pr-ps-05.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-pr-ps-05.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 1d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf: ["PR.PS-05"]
+    nist_800_53: ["CM-7"]
+    iso27001: ["A.8.19"]
+    soc2: ["CC6.8"]
+
+  status: stable
+  blocking: true

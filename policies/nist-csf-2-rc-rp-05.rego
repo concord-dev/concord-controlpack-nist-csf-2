@@ -1,20 +1,34 @@
-package concord.nist_csf_2.nist_csf_2_rc_rp_05
+package concord.nist_csf_2.rc_rp_05
 
 import rego.v1
-import data.concord.lib.attestation
-import data.concord.lib.evidence
+
+max_review_age_days := 365
+
+required_fields := {"verification_procedure", "acceptance_criteria",
+                    "sign_off_role", "last_reviewed_at"}
 
 deny contains msg if {
-	not evidence.present(input, "nist_csf_2_rc_rp_05")
-	msg := "NIST-CSF-2-RC.RP-05: no signed attestation submitted"
+    not input.attestation
+    msg := "no restoration-verification attestation collected"
 }
 
 deny contains msg if {
-	not attestation.not_expired(input.nist_csf_2_rc_rp_05)
-	msg := sprintf("NIST-CSF-2-RC.RP-05: attestation expired (expires_at=%s)", [input.nist_csf_2_rc_rp_05.expires_at])
+    input.attestation.kind != "restoration_verification"
+    msg := sprintf("attestation kind is %q, expected \"restoration_verification\"", [input.attestation.kind])
 }
 
 deny contains msg if {
-	not attestation.fresh(input.nist_csf_2_rc_rp_05, 365)
-	msg := sprintf("NIST-CSF-2-RC.RP-05: attestation not reviewed in 365 days (last_review_at=%s)", [input.nist_csf_2_rc_rp_05.last_review_at])
+    not input.attestation.signature_verified
+    msg := "restoration-verification attestation cosign signature did not verify"
+}
+
+deny contains msg if {
+    some f in required_fields
+    not input.attestation.attested_fields[f]
+    msg := sprintf("restoration-verification attestation missing field: %s", [f])
+}
+
+deny contains msg if {
+    input.attestation.attested_fields.review_age_days > max_review_age_days
+    msg := sprintf("restoration verification procedure last reviewed %d days ago (max %d)", [input.attestation.attested_fields.review_age_days, max_review_age_days])
 }

@@ -1,11 +1,11 @@
 {
-  "nist_csf_2_rs_ma_03": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "incident_categorization",
+  "signature_verified": true,
+  "attested_fields": {
+    "category_scheme": "NIST SP 800-61 categories: malware, unauthorized access, DoS, data loss, phishing",
+    "priority_matrix": "impact x urgency grid mapping to P1-P4 with defined examples per cell",
+    "assignment_rules": "P1/P2 auto-page the on-call IR lead; P3/P4 queue to SOC backlog with 1-business-day pickup",
+    "last_reviewed_at": "2026-06-05",
+    "review_age_days": 35
   }
 }

@@ -1,8 +1,14 @@
 {
-  "nist_csf_2_id_am_05": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": true, "reason": "" }
-    ]
+  "kind": "asset_prioritization",
+  "signature_verified": true,
+  "attested_fields": {
+    "classification_scheme": "four-tier: mission_critical, high, moderate, low",
+    "criticality_criteria": ["business impact", "data sensitivity", "regulatory exposure", "recovery time objective"],
+    "prioritized_assets": [
+      {"asset": "primary customer database", "tier": "mission_critical"},
+      {"asset": "billing service", "tier": "high"},
+      {"asset": "internal wiki", "tier": "low"}
+    ],
+    "last_reviewed_at": "2026-06-10T00:00:00Z"
   }
 }

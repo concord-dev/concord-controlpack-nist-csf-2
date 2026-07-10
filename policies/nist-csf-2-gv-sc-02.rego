@@ -1,20 +1,52 @@
-package concord.nist_csf_2.nist_csf_2_gv_sc_02
+package concord.nist_csf_2.gv_sc_02
 
 import rego.v1
-import data.concord.lib.attestation
-import data.concord.lib.evidence
 
-deny contains msg if {
-	not evidence.present(input, "nist_csf_2_gv_sc_02")
-	msg := "NIST-CSF-2-GV.SC-02: no signed attestation submitted"
+# NIST CSF 2.0 GV.SC-02 — cybersecurity roles and responsibilities for
+# suppliers are established and coordinated internally and externally.
+
+expected_kind := "supplier_roles"
+
+required_fields := {
+    "supplier_responsibilities",
+    "internal_owners",
+    "escalation",
+    "last_reviewed_at",
 }
 
 deny contains msg if {
-	not attestation.not_expired(input.nist_csf_2_gv_sc_02)
-	msg := sprintf("NIST-CSF-2-GV.SC-02: attestation expired (expires_at=%s)", [input.nist_csf_2_gv_sc_02.expires_at])
+    not input.attestation
+    msg := "no supplier-roles attestation collected"
 }
 
 deny contains msg if {
-	not attestation.fresh(input.nist_csf_2_gv_sc_02, 365)
-	msg := sprintf("NIST-CSF-2-GV.SC-02: attestation not reviewed in 365 days (last_review_at=%s)", [input.nist_csf_2_gv_sc_02.last_review_at])
+    input.attestation.kind != expected_kind
+    msg := sprintf("attestation kind is %q, expected %q", [input.attestation.kind, expected_kind])
+}
+
+deny contains msg if {
+    some f in required_fields
+    not input.attestation.attested_fields[f]
+    msg := sprintf("supplier-roles attestation missing required field: %s", [f])
+}
+
+deny contains msg if {
+    count(input.attestation.attested_fields.supplier_responsibilities) == 0
+    msg := "supplier-roles attestation defines zero supplier responsibilities"
+}
+
+deny contains msg if {
+    count(input.attestation.attested_fields.internal_owners) == 0
+    msg := "supplier-roles attestation assigns no internal owners"
+}
+
+deny contains msg if {
+    not input.attestation.signature_verified
+    msg := "supplier-roles attestation cosign signature did not verify"
+}
+
+deny contains msg if {
+    reviewed := time.parse_rfc3339_ns(input.attestation.attested_fields.last_reviewed_at)
+    time.now_ns() - reviewed > ((365 * 24) * 60 * 60) * 1000000000
+    msg := "supplier roles and responsibilities have not been reviewed in the last 365 days"
 }

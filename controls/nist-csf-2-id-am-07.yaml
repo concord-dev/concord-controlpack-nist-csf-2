@@ -6,35 +6,60 @@ metadata:
   name: nist-csf-2-id-am-07
   title: Inventories of data and metadata are maintained
   framework: nist-csf-2
-  severity: medium
-  tags: []
+  category: Identify
+  severity: high
+  tags:
+    - nist-csf-2
+    - identify
+    - inventory
+    - data-management
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what NIST-CSF-2-ID.AM-07 enforces.
+    NIST CSF 2.0 ID.AM-07 requires inventories of data and corresponding
+    metadata for designated data types to be maintained. Concord verifies a
+    signed data-inventory attestation that enumerates the data categories
+    the organization holds, names an owner for each, records the
+    classification scheme applied, and shows the inventory was reviewed
+    within the last year.
+
+  rationale: |
+    Data protection controls (PR.DS) cannot be scoped to data that is not
+    inventoried. ID.AM-07 fails when data categories are undocumented or
+    unowned, because unclassified data receives no defined handling,
+    encryption, or retention requirement and is the most common source of
+    breach exposure.
 
   evidence:
-    - id: nist_csf_2_id_am_07
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/nist-csf-2-id-am-07-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: data_inventory
 
   policy:
     engine: rego
-    package: concord.nist_csf_2.nist_csf_2_id_am_07
+    package: concord.nist_csf_2.id_am_07
     file: ../policies/nist-csf-2-id-am-07.rego
 
   remediation:
     runbook: docs/remediation/nist-csf-2-id-am-07.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    nist_csf:
+      - "ID.AM-07"
+    nist_800_53:
+      - "CM-8"
+      - "PM-5"
+    iso27001:
+      - "A.5.9"
+      - "A.5.12"
+      - "A.5.13"
+
+  status: stable
+  blocking: true

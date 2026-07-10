@@ -1,11 +1,19 @@
 {
-  "nist_csf_2_gv_oc_03": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "legal_regulatory_requirements",
+  "signature_verified": true,
+  "attested_fields": {
+    "applicable_regulations": [
+      "EU GDPR",
+      "California CCPA/CPRA",
+      "SOC 2 (contractual)",
+      "PCI DSS v4.0"
+    ],
+    "contractual_obligations": [
+      "Enterprise MSA security addendum (72h breach notification)",
+      "DPA with EU customers (SCCs)",
+      "Uptime SLA of 99.9% in top-tier customer contracts"
+    ],
+    "tracking_process": "Legal maintains a compliance obligation register reviewed quarterly with the CISO; regulatory-change alerts are subscribed via outside counsel.",
+    "last_reviewed_at": "2026-06-20T00:00:00Z"
   }
 }
