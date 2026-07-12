@@ -98,3 +98,23 @@ encrypted_protocol(l) if {
 tls12plus(l) if {
 	tls12plus_policies[l.ssl_policy]
 }
+
+# doc 31 §4 — no fail-open tag gates: a resource with no 'sensitive' tag is neither confirmed in-scope
+# nor out-of-scope, so every deny above skips it and it would pass silently.
+# Warn on the unclassified resource instead of ignoring it.
+
+warn contains msg if {
+	some resource in input.transit_endpoints.buckets
+	not classified(resource)
+	msg := sprintf("S3 bucket %q has no sensitive tag, so this control's checks did not apply to it — tag sensitive=true to bring it into sensitive-data scope or sensitive=false to confirm it is out of scope", [resource.name])
+}
+
+warn contains msg if {
+	some resource in input.transit_endpoints.load_balancers
+	not classified(resource)
+	msg := sprintf("load balancer %q has no sensitive tag, so this control's checks did not apply to it — tag sensitive=true to bring it into sensitive-data scope or sensitive=false to confirm it is out of scope", [resource.name])
+}
+
+classified(resource) if resource.tags.sensitive == "true"
+
+classified(resource) if resource.tags.sensitive == "false"
